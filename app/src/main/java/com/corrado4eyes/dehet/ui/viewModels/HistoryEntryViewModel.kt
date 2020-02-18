@@ -2,13 +2,12 @@ package com.corrado4eyes.dehet.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.corrado4eyes.dehet.models.HistoryEntry
 
-class HistoryEntryViewModel(private val _adverb: String, private val _article: String): ViewModel() {
-    val article = MutableLiveData<String>()
-    val adverb = MutableLiveData<String>()
+class HistoryEntryViewModel(private val _entry: HistoryEntry): ViewModel() {
+    val entry = MutableLiveData<HistoryEntry>()
 
     init {
-        article.value = _adverb
-        adverb.value = _article
+        entry.value = _entry
     }
 }
