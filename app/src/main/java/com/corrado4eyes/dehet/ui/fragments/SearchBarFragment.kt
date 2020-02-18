@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,7 +30,11 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
 
     private fun onSearchButtonClicked() {
         MainScope().launch {
-            viewModel.resultLabel.value = viewModel.onSearchButtonClicked()
+            if(viewModel.editTextValue.value != "") {
+                viewModel.resultLabel.value = viewModel.onSearchButtonClicked()
+            } else {
+                Toast.makeText(activity, "The text box is empty!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
