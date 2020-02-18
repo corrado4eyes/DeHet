@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ResultFragmentBinding
-import com.corrado4eyes.dehet.databinding.SearchBarFragmentBinding
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 
 class ResultFragment: Fragment() {
