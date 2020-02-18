@@ -15,16 +15,22 @@ class HomeViewModel: ViewModel() {
 
 
     val editTextValue = MutableLiveData<String>()
-    val resultLabel = MutableLiveData<String>()
+    val resultLabel = MutableLiveData<HistoryEntry>()
     val historyList = MutableLiveData<List<HistoryEntry>>()
 
     init {
         editTextValue.value = ""
-        resultLabel.value = ""
+        resultLabel.value = HistoryEntry()
         historyList.value = emptyList()
     }
 
-    suspend fun onSearchButtonClicked() = doInBackground {
+    suspend fun onSearchButtonClicked(): HistoryEntry = doInBackground {
         return@doInBackground viewModelDelegate.getArticle(editTextValue.value!!)
+    }
+
+    suspend fun onAddResultClicked(): List<HistoryEntry> = doInBackground {
+        return@doInBackground viewModelDelegate.addArticle(resultLabel.value!!.article,
+            resultLabel.value!!.adverb,
+            historyList.value!!.toMutableList())
     }
 }

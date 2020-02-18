@@ -32,7 +32,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.EntryHolder>() {
 
     class EntryHolder(private val view: HistoryEntryBinding): RecyclerView.ViewHolder(view.root) {
         fun bind(entry: HistoryEntry) {
-            view.viewModel = HistoryEntryViewModel(entry.adverb, entry.article)
+            view.viewModel = HistoryEntryViewModel(entry)
         }
     }
 }

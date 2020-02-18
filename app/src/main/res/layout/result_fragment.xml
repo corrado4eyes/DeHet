@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/resultLabel"
             android:hint="@string/articleLabel"
-            android:text="@{viewModel.resultLabel}" />
+            android:text="@{viewModel.resultLabel.toString()}" />
         </LinearLayout>
 
         <ImageButton
