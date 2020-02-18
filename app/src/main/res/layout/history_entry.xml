@@ -19,7 +19,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/articleLabel"
             android:id="@+id/adverbLabel"
             android:text="@{viewModel.article}"/>
