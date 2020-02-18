@@ -13,7 +13,6 @@ import com.corrado4eyes.dehet.databinding.SearchBarFragmentBinding
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.search_bar_fragment.view.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
