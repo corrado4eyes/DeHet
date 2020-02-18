@@ -9,10 +9,7 @@
     </data>
     <RelativeLayout
         android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingEnd="2dp"
-        android:paddingBottom="5dp"
-        android:paddingStart="2dp">
+        android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/searchBar"
@@ -31,8 +28,6 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/rounded_button"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
             android:src="@drawable/magnifying_glass_32x32"
             android:id="@+id/searchArticleBtn"/>
     </RelativeLayout>
