@@ -14,6 +14,7 @@ import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.search_bar_fragment.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
@@ -55,5 +56,10 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
         view.searchArticleBtn.setOnClickListener {
             onSearchButtonClicked()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
     }
 }
