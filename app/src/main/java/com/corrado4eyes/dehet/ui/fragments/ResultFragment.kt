@@ -10,8 +10,13 @@ import androidx.fragment.app.activityViewModels
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ResultFragmentBinding
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import kotlinx.android.synthetic.main.result_fragment.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class ResultFragment: Fragment() {
+class ResultFragment: Fragment(), CoroutineScope by MainScope() {
     companion object {
         fun getInstance(): ResultFragment {
             return ResultFragment()
@@ -33,4 +38,22 @@ class ResultFragment: Fragment() {
         return binding.root
     }
 
+    private fun onAddResultClicked() {
+        MainScope().launch {
+            viewModel.historyList.value = viewModel.onAddResultClicked()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.addResultButton.setOnClickListener {
+            onAddResultClicked()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
+    }
 }
