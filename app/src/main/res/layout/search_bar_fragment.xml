@@ -7,24 +7,33 @@
             name="viewModel"
             type="com.corrado4eyes.dehet.ui.viewModels.HomeViewModel" />
     </data>
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="3">
+        android:paddingEnd="2dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="2dp">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/searchBar"
-            android:hint="@string/type_the_word"
-            android:layout_weight="3"
-            android:text="@={viewModel.editTextValue}"/>
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/searchArticleBtn"
-            android:text="@string/search" />
-    </LinearLayout>
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/searchArticleBtn"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="@string/type_the_word"
+            android:text="@={viewModel.editTextValue}" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/rounded_button"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:src="@drawable/magnifying_glass_32x32"
+            android:id="@+id/searchArticleBtn"/>
+    </RelativeLayout>
 </layout>
