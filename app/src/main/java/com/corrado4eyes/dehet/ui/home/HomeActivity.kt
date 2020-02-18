@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
+import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
 import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
@@ -37,6 +38,14 @@ class HomeActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun attachHistoryFragment() {
+        val transaction = fragmentManager.beginTransaction()
+        val fragment = HistoryListFragment.getInstance()
+        transaction.replace(R.id.historyFragment, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupBinding() {
         val binding = DataBindingUtil
             .setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -53,5 +62,6 @@ class HomeActivity : AppCompatActivity() {
         // Attaching fragment
         attachSearchBarFragment()
         attachResultFragment()
+        attachHistoryFragment()
     }
 }
