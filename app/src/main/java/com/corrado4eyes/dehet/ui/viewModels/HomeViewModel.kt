@@ -24,8 +24,14 @@ class HomeViewModel: ViewModel() {
         historyList.value = emptyList()
     }
 
+    private fun checkText(text: String): String {
+        return viewModelDelegate.checkTextStructure(text)
+    }
+
     suspend fun onSearchButtonClicked(): HistoryEntry = doInBackground {
-        return@doInBackground viewModelDelegate.getArticle(editTextValue.value!!)
+        val text = editTextValue.value!!
+        val checkedText = checkText(text)
+        return@doInBackground viewModelDelegate.getArticle(checkedText)
     }
 
     suspend fun onAddResultClicked(): List<HistoryEntry> = doInBackground {
