@@ -5,6 +5,6 @@ data class HistoryEntry(
     val adverb: String = "",
     val isFavourite: Boolean = false) {
     override fun toString(): String {
-        return "$article $adverb"
+        return "${article.capitalize()} $adverb"
     }
 }
