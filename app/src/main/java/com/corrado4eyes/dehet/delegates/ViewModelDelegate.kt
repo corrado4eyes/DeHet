@@ -1,6 +1,5 @@
 package com.corrado4eyes.dehet.delegates
 
-import android.util.Log
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.repos.YandexRepository
 import com.corrado4eyes.dehet.util.doInBackground
