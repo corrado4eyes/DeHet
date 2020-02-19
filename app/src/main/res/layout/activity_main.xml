@@ -12,9 +12,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="bottom"
+        android:background="@color/dirtyWhite"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginTop="2dp"
@@ -23,13 +24,16 @@
         <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/dirtyWhite"
             android:layout_alignParentTop="true"
+            android:layout_above="@+id/resultFragment"
             android:id="@+id/historyFragment"
             android:name="com.corrado4eyes.dehet.ui.fragments.HistoryListFragment"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/dirtyWhite"
             android:layout_above="@+id/searchBarFragment"
             android:layout_marginBottom="10dp"
             android:id="@+id/resultFragment"
@@ -38,6 +42,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/dirtyWhite"
             android:layout_alignParentBottom="true"
             android:id="@+id/searchBarFragment"
             android:name="com.corrado4eyes.dehet.ui.fragments.SearchBarFragment"/>
