@@ -6,10 +6,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
+import com.corrado4eyes.dehet.di.YandexModule
 import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
 import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class HomeActivity : AppCompatActivity() {
 
@@ -53,9 +56,20 @@ class HomeActivity : AppCompatActivity() {
         binding.homeViewModel = viewModel
     }
 
+    private fun initializeDependencyInjection() {
+        startKoin {
+            androidContext(applicationContext)
+            modules(listOf(YandexModule.yandexModule))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Dependency injection
+        initializeDependencyInjection()
+
         // DataBinding
         setupBinding()
 
