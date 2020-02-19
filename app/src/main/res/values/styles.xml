@@ -7,6 +7,7 @@
         <item name="colorPrimary">@color/deepSeaBlue</item>
         <item name="colorAccent">@color/darkRed</item>
         <item name="background">@color/dirtyWhite</item>
+        <item name="font">@font/montserrat_regular</item>
     </style>
 
 </resources>

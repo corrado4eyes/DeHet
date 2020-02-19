@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/resultLabel"
             android:hint="@string/articleLabel"
+            android:fontFamily="@font/montserrat_regular"
             android:text="@{viewModel.resultLabel.toString()}" />
         </LinearLayout>
 
