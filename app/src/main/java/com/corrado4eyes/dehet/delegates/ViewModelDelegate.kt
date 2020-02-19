@@ -1,5 +1,6 @@
 package com.corrado4eyes.dehet.delegates
 
+import android.util.Log
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.repos.YandexRepository
 import com.corrado4eyes.dehet.util.doInBackground
@@ -13,8 +14,20 @@ class ViewModelDelegate: KoinComponent {
 
     private val yandexRepo by inject<YandexRepository>()
 
+    fun checkTextStructure(text: String): String {
+        val splittedText = text.split(" ")
+        return if(splittedText.size > 1) {
+            // Return the single word if prefixes are added (like article or whatever)
+            splittedText.last()
+        } else {
+            // Single word
+            text
+        }
+    }
+
     suspend fun getArticle(word: String): HistoryEntry = doInBackground {
-        val response = yandexRepo.getTranslation("en-nl", word)
+        val fullText = "the $word"
+        val response = yandexRepo.getTranslation("en-nl", fullText)
         val article = response.text.first().split(" ").first()
         val adverb = response.text.first().split(" ").last()
         return@doInBackground HistoryEntry(article, adverb)
