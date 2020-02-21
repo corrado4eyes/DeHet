@@ -44,9 +44,9 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return@doInBackground viewModelDelegate.getArticle(checkedText)
     }
 
-    suspend fun onAddResultClicked(): List<HistoryEntry> = coroutineUtil.doInBackground {
-        return@doInBackground viewModelDelegate.addArticle(resultLabel.value!!.article,
-            resultLabel.value!!.word,
-            historyList.value!!.toMutableList())
+    suspend fun onAddResultClicked(newEntry: HistoryEntry): List<HistoryEntry> = coroutineUtil.doInBackground {
+        val oldList = historyList.value?.toMutableList()
+            ?: mutableListOf()
+        return@doInBackground viewModelDelegate.addArticle(newEntry, oldList)
     }
 }
