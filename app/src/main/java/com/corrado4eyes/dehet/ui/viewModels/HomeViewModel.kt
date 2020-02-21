@@ -31,8 +31,12 @@ class HomeViewModel: ViewModel(), KoinComponent {
 
     init {
         editTextValue.value = ""
-        resultHistoryEntry.value = HistoryEntry()
+        resultHistoryEntry.value = null
         historyList.value = emptyList()
+    }
+
+    fun isAddEntryClickable(): Boolean {
+        return resultHistoryEntry != null
     }
 
     private fun checkText(text: String): String {
