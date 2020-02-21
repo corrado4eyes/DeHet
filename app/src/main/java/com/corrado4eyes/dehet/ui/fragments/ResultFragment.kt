@@ -40,7 +40,7 @@ class ResultFragment: Fragment(), CoroutineScope by MainScope() {
     }
 
     private fun onAddResultClicked() {
-        val newEntry = viewModel.resultLabel.value
+        val newEntry = viewModel.resultHistoryEntry.value
         MainScope().launch {
             if(newEntry != null) {
                 viewModel.historyList.value = viewModel.onAddResultClicked(newEntry)

@@ -26,12 +26,12 @@ class HomeViewModel: ViewModel(), KoinComponent {
 
 
     val editTextValue = MutableLiveData<String>()
-    val resultLabel = MutableLiveData<HistoryEntry>()
+    val resultHistoryEntry = MutableLiveData<HistoryEntry>()
     val historyList = MutableLiveData<List<HistoryEntry>>()
 
     init {
         editTextValue.value = ""
-        resultLabel.value = HistoryEntry()
+        resultHistoryEntry.value = HistoryEntry()
         historyList.value = emptyList()
     }
 
