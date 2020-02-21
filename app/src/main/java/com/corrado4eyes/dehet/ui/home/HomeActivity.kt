@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
-import com.corrado4eyes.dehet.di.YandexModule
+import com.corrado4eyes.dehet.di.Modules
 import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
 import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
@@ -59,7 +59,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initializeDependencyInjection() {
         startKoin {
             androidContext(applicationContext)
-            modules(listOf(YandexModule.yandexModule))
+            modules(Modules.modules)
         }
     }
 
