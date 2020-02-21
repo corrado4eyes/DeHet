@@ -32,7 +32,7 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
         val givenText = viewModel.editTextValue.value ?: ""
         MainScope().launch {
             if(givenText != "") {
-                viewModel.resultLabel.value = viewModel
+                viewModel.resultHistoryEntry.value = viewModel
                     .onSearchButtonClicked(givenText)
             } else {
                 Toast.makeText(activity, "The text box is empty!", Toast.LENGTH_SHORT).show()
