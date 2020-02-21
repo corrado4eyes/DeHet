@@ -7,7 +7,8 @@ buildscript {
         coreTestingVersion = '2.0.0'
         espressoVersion = '3.2.0'
         testExtJunit = '1.1.1'
-
+        fragment_version = '1.2.0'
+        koin_version = '2.0.1'
     }
     repositories {
         google()

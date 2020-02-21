@@ -2,16 +2,15 @@ package com.corrado4eyes.dehet.delegates
 
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.repos.YandexRepository
-import com.corrado4eyes.dehet.util.doInBackground
+import com.corrado4eyes.dehet.util.CoroutineUtil
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class ViewModelDelegate: KoinComponent {
+class ViewModelDelegate(private val yandexRepo: YandexRepository,
+                        val coroutineUtil: CoroutineUtil): KoinComponent {
     companion object {
         private const val TAG = "ViewModelDelegate"
     }
-
-    private val yandexRepo by inject<YandexRepository>()
 
     fun checkTextStructure(text: String): String {
         val splittedText = text.split(" ")
@@ -24,7 +23,7 @@ class ViewModelDelegate: KoinComponent {
         }
     }
 
-    suspend fun getArticle(word: String): HistoryEntry = doInBackground {
+    suspend fun getArticle(word: String): HistoryEntry = coroutineUtil.doInBackground {
         val fullText = "the $word"
         val response = yandexRepo.getTranslation("en-nl", fullText)
         val article = response.text.first().split(" ").first()
@@ -32,8 +31,9 @@ class ViewModelDelegate: KoinComponent {
         return@doInBackground HistoryEntry(article, adverb)
     }
 
-    suspend fun addArticle(article: String, adverb: String, oldList: MutableList<HistoryEntry>): List<HistoryEntry> = doInBackground {
-        val newEntry = HistoryEntry(article, adverb)
+    suspend fun addArticle(newEntry: HistoryEntry,
+                           oldList: MutableList<HistoryEntry>): List<HistoryEntry> =
+        coroutineUtil.doInBackground {
         return@doInBackground oldList.plus(newEntry)
     }
 }

@@ -23,10 +23,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/resultLabel"
+            android:id="@+id/resultHistoryEntry"
             android:hint="@string/articleLabel"
             android:fontFamily="@font/montserrat_regular"
-            android:text="@{viewModel.resultLabel.toString()}" />
+            android:text="@{viewModel.resultHistoryEntry.toString()}" />
         </LinearLayout>
 
         <ImageButton
@@ -35,6 +35,7 @@
             android:background="@drawable/rounded_button"
             android:id="@+id/addResultButton"
             android:src="@drawable/add_32x32"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:clickable="@{viewModel.isAddEntryClickable()}"/>
     </RelativeLayout>
 </layout>

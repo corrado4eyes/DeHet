@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -39,8 +40,13 @@ class ResultFragment: Fragment(), CoroutineScope by MainScope() {
     }
 
     private fun onAddResultClicked() {
+        val newEntry = viewModel.resultHistoryEntry.value
         MainScope().launch {
-            viewModel.historyList.value = viewModel.onAddResultClicked()
+            if(newEntry != null) {
+                viewModel.historyList.value = viewModel.onAddResultClicked(newEntry)
+            } else {
+                Toast.makeText(context, "The result field is empty", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
