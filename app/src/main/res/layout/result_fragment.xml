@@ -35,6 +35,7 @@
             android:background="@drawable/rounded_button"
             android:id="@+id/addResultButton"
             android:src="@drawable/add_32x32"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:clickable="@{viewModel.isAddEntryClickable()}"/>
     </RelativeLayout>
 </layout>
