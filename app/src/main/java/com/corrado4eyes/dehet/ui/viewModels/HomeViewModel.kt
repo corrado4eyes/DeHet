@@ -35,12 +35,20 @@ class HomeViewModel: ViewModel(), KoinComponent {
         historyList.value = emptyList()
     }
 
+    private fun checkText(text: String): String {
+        return viewModelDelegate.checkTextStructure(text)
+    }
+
     fun isAddEntryClickable(): Boolean {
         return resultHistoryEntry != null
     }
 
-    private fun checkText(text: String): String {
-        return viewModelDelegate.checkTextStructure(text)
+    fun onFavouriteButtonClicked(position: Int): List<HistoryEntry> {
+        val entry = historyList.value!![position]
+        entry.isFavourite = !entry.isFavourite
+        val historyList = historyList.value?.toMutableList()
+            ?: mutableListOf()
+        return viewModelDelegate.updateItemInHistory(entry, position, historyList)
     }
 
     suspend fun onSearchButtonClicked(text: String): HistoryEntry = coroutineUtil.doInBackground {

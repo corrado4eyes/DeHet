@@ -31,9 +31,12 @@ class ViewModelDelegate(private val yandexRepo: YandexRepository,
         return@doInBackground HistoryEntry(article, adverb)
     }
 
-    suspend fun addArticle(newEntry: HistoryEntry,
-                           oldList: MutableList<HistoryEntry>): List<HistoryEntry> =
-        coroutineUtil.doInBackground {
-        return@doInBackground oldList.plus(newEntry)
+    fun addArticle(newEntry: HistoryEntry, oldList: MutableList<HistoryEntry>):
+            List<HistoryEntry> = oldList.plus(newEntry)
+
+    fun updateItemInHistory(newEntry: HistoryEntry, position: Int, list: MutableList<HistoryEntry>):
+            List<HistoryEntry> {
+        list[position] = newEntry
+        return list
     }
 }
