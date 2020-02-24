@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.HistoryFragmentBinding
 import com.corrado4eyes.dehet.ui.adapters.HistoryAdapter
+import com.corrado4eyes.dehet.ui.adapters.HistoryEntryEvent
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
-class HistoryListFragment: Fragment() {
+class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by MainScope() {
     companion object {
         private const val TAG = "HistoryListFragment"
 
@@ -23,7 +27,7 @@ class HistoryListFragment: Fragment() {
         }
     }
 
-    private val adapter = HistoryAdapter()
+    private val adapter = HistoryAdapter(this)
     private val viewModel by activityViewModels<HomeViewModel>()
 
     override fun onCreateView(
@@ -43,5 +47,11 @@ class HistoryListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "The size is: ${viewModel.historyList.value!!.size}")
+    }
+
+    override fun onFavouriteButtonClicked(position: Int) {
+        MainScope().launch {
+            viewModel.historyList.value = viewModel.onFavouriteButtonClicked(position)
+        }
     }
 }
