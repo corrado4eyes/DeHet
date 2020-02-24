@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-        <variable
-            name="viewModel"
-            type="com.corrado4eyes.dehet.ui.viewModels.HistoryEntryViewModel" />
-    </data>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +16,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/articleLabel"
                 android:textSize="20sp"
-                android:fontFamily="@font/montserrat_regular"
-                android:text="@{viewModel.entry.toString()}"/>
+                android:fontFamily="@font/montserrat_regular"/>
         </LinearLayout>
 
         <ImageButton
@@ -31,7 +25,6 @@
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:id="@+id/favouriteButton"
-            android:src="@drawable/empty_bookmark"
             android:elevation="2dp"/>
     </RelativeLayout>
 </layout>
