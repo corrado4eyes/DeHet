@@ -35,12 +35,12 @@ class HomeViewModel: ViewModel(), KoinComponent {
         historyList.value = emptyList()
     }
 
-    fun isAddEntryClickable(): Boolean {
-        return resultHistoryEntry != null
-    }
-
     private fun checkText(text: String): String {
         return viewModelDelegate.checkTextStructure(text)
+    }
+
+    fun isAddEntryClickable(): Boolean {
+        return resultHistoryEntry != null
     }
 
     suspend fun onSearchButtonClicked(text: String): HistoryEntry = coroutineUtil.doInBackground {
