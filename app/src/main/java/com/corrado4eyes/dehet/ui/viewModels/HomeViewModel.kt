@@ -43,6 +43,14 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return resultHistoryEntry != null
     }
 
+    fun onFavouriteButtonClicked(position: Int): List<HistoryEntry> {
+        val entry = historyList.value!![position]
+        entry.isFavourite = !entry.isFavourite
+        val historyList = historyList.value?.toMutableList()
+            ?: mutableListOf()
+        return viewModelDelegate.updateItemInHistory(entry, position, historyList)
+    }
+
     suspend fun onSearchButtonClicked(text: String): HistoryEntry = coroutineUtil.doInBackground {
         val checkedText = checkText(text)
         return@doInBackground viewModelDelegate.getArticle(checkedText)
