@@ -17,6 +17,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -71,5 +73,19 @@ class HomeViewModelTest: KoinTest {
         val result = viewModel.onAddResultClicked(newEntry)
         assertEquals(result.size, 1)
         assertEquals(result[0], newEntry)
+    }
+
+    @Test
+    fun onFavouriteButtonClicked() {
+        viewModel.historyList.value = listOf(
+            HistoryEntry("De", "test"),
+            HistoryEntry("Het", "case")
+        )
+
+        val list = viewModel.historyList.value
+        list?.get(0)?.isFavourite?.let { assertFalse(it) }
+        val result = viewModel.onFavouriteButtonClicked(0)
+        assertTrue(result[0].isFavourite)
+        assertFalse(result[1].isFavourite)
     }
 }
