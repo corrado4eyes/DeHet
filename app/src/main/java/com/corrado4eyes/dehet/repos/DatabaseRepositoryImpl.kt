@@ -1,17 +1,22 @@
 package com.corrado4eyes.dehet.repos
 
+import com.corrado4eyes.dehet.data.local.daos.HistoryDao
 import com.corrado4eyes.dehet.models.HistoryEntry
 
-class DatabaseRepositoryImpl : DatabaseRepository {
+class DatabaseRepositoryImpl(private val historyDao: HistoryDao) : DatabaseRepository {
     override fun upsert(entry: HistoryEntry) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        historyDao.upsertEntry(entry)
     }
 
     override fun getAll(): List<HistoryEntry> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return historyDao.getHistory()
     }
 
     override fun filter(isFavourite: Boolean): List<HistoryEntry> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return historyDao.filterByFavourite(isFavourite)
+    }
+
+    override fun count(): Int {
+        return historyDao.count()
     }
 }
