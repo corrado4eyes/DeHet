@@ -39,10 +39,6 @@ class HomeViewModel: ViewModel(), KoinComponent {
         historyList.value = emptyList()
     }
 
-    suspend fun onResumeHistoryState(): List<HistoryEntry> = coroutineUtil.doInBackground {
-        return@doInBackground viewModelDelegate.getHistory()
-    }
-
     private fun checkText(text: String): String {
         return viewModelDelegate.checkTextStructure(text)
     }
@@ -51,12 +47,17 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return resultHistoryEntry != null
     }
 
-    suspend fun onFavouriteButtonClicked(position: Int): List<HistoryEntry> =
+    suspend fun onFavouriteButtonClicked(position: Int){
         coroutineUtil.doInBackground {
             val entry = historyList.value!![position]
             entry.isFavourite = !entry.isFavourite
             viewModelDelegate.upsertEntry(entry)
             return@doInBackground viewModelDelegate.getHistory()
+        }
+    }
+
+    suspend fun syncUiWithDb(): List<HistoryEntry> = coroutineUtil.doInBackground {
+        return@doInBackground viewModelDelegate.getHistory()
     }
 
     suspend fun onSearchButtonClicked(text: String): HistoryEntry = coroutineUtil.doInBackground {
@@ -64,9 +65,9 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return@doInBackground viewModelDelegate.getArticle(checkedText)
     }
 
-    suspend fun onAddResultClicked(newEntry: HistoryEntry): List<HistoryEntry> =
+    suspend fun onAddResultClicked(newEntry: HistoryEntry){
         coroutineUtil.doInBackground {
             viewModelDelegate.upsertEntry(newEntry)
-            return@doInBackground viewModelDelegate.getHistory()
+        }
     }
 }
