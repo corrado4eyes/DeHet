@@ -47,9 +47,8 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return resultHistoryEntry != null
     }
 
-    suspend fun onFavouriteButtonClicked(position: Int) {
+    suspend fun onFavouriteButtonClicked(entry: HistoryEntry) {
         coroutineUtil.doInBackground {
-            val entry = historyList.value!![position]
             entry.isFavourite = !entry.isFavourite
             viewModelDelegate.upsertEntry(entry)
         }
@@ -67,6 +66,12 @@ class HomeViewModel: ViewModel(), KoinComponent {
     suspend fun onAddResultClicked(newEntry: HistoryEntry){
         coroutineUtil.doInBackground {
             viewModelDelegate.upsertEntry(newEntry)
+        }
+    }
+
+    suspend fun onDeleteButtonClicked(entry: HistoryEntry) {
+        coroutineUtil.doInBackground {
+            viewModelDelegate.deleteEntry(entry)
         }
     }
 }

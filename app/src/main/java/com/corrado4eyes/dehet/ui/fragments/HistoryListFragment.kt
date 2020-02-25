@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.HistoryFragmentBinding
+import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.ui.adapters.HistoryAdapter
 import com.corrado4eyes.dehet.ui.adapters.HistoryEntryEvent
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
@@ -51,9 +52,16 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         }
     }
 
-    override fun onFavouriteButtonClicked(position: Int) {
+    override fun onFavouriteButtonClicked(entry: HistoryEntry) {
         MainScope().launch {
-            viewModel.onFavouriteButtonClicked(position)
+            viewModel.onFavouriteButtonClicked(entry)
+            viewModel.historyList.value = viewModel.syncUiWithDb()
+        }
+    }
+
+    override fun onDeleteButtonClicked(entry: HistoryEntry) {
+        MainScope().launch {
+            viewModel.onDeleteButtonClicked(entry)
             viewModel.historyList.value = viewModel.syncUiWithDb()
         }
     }

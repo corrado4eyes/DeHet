@@ -15,8 +15,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.get
-import org.mockito.MockitoAnnotations
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -57,6 +57,22 @@ class DatabaseRepositoryTest: KoinTest {
     }
 
     @Test
+    fun deleteEntry() {
+        insertEntries()
+        val entries = databaseRepo.getAll()
+        val badEntry = entries.first()
+        val goodEntry = entries.last()
+
+        databaseRepo.delete(badEntry)
+
+        val result = databaseRepo.getAll()
+
+        assertEquals(1, result.size)
+        assertNotEquals(result.first(), badEntry)
+        assertEquals(result.first(), goodEntry)
+    }
+
+    @Test
     fun getAll() {
         insertEntries()
 
@@ -70,8 +86,8 @@ class DatabaseRepositoryTest: KoinTest {
         insertEntries()
 
         val result = databaseRepo.filter(isFavourite = false)
-        val favoriteEntry = entries[0]
-        assertEquals(result.first(), favoriteEntry)
+        val notFavoriteEntry = entries[0]
+        assertEquals(result.first(), notFavoriteEntry)
     }
 
     @Test
