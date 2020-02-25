@@ -1,9 +1,6 @@
 package com.corrado4eyes.dehet.data.local.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.corrado4eyes.dehet.models.HistoryEntry
 
 @Dao
@@ -20,6 +17,12 @@ interface HistoryDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsertEntry(entry: HistoryEntry): Long
+
+    /**
+     * Delete the given entry from the db
+     */
+    @Delete
+    fun deleteEntry(entry: HistoryEntry)
 
     /**
      * Filter the results by the favourite field.
