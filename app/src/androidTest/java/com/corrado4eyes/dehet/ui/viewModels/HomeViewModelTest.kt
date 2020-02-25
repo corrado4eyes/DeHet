@@ -70,13 +70,14 @@ class HomeViewModelTest: KoinTest {
     @Test
     fun onAddResultClicked() = runBlocking {
         val newEntry = HistoryEntry("de", "test")
-        val result = viewModel.onAddResultClicked(newEntry)
+        viewModel.onAddResultClicked(newEntry)
+        val result = viewModel.syncUiWithDb()
         assertEquals(result.size, 1)
         assertEquals(result[0], newEntry)
     }
 
     @Test
-    fun onFavouriteButtonClicked() {
+    fun onFavouriteButtonClicked() = runBlocking {
         viewModel.historyList.value = listOf(
             HistoryEntry("De", "test"),
             HistoryEntry("Het", "case")
@@ -84,8 +85,8 @@ class HomeViewModelTest: KoinTest {
 
         val list = viewModel.historyList.value
         list?.get(0)?.isFavourite?.let { assertFalse(it) }
-        val result = viewModel.onFavouriteButtonClicked(0)
+        viewModel.onFavouriteButtonClicked(0)
+        val result = viewModel.syncUiWithDb()
         assertTrue(result[0].isFavourite)
-        assertFalse(result[1].isFavourite)
     }
 }
