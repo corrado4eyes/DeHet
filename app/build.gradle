@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$room_version"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    androidTestImplementation "org.koin:koin-test:$koin_version"
+    androidTestImplementation ("org.koin:koin-test:$koin_version") { exclude group: 'org.mockito' }
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
