@@ -112,7 +112,9 @@ class HomeViewModelTest: KoinTest {
         }
 
         viewModel.historyList.value?.map { assertFalse(it.isFavourite) }
-        viewModel.onFavouriteButtonClicked(1)
+
+        val list = viewModel.historyList.value!!
+        viewModel.onFavouriteButtonClicked(list[1])
         val result = viewModel.syncUiWithDb()
         assertTrue(result[0].isFavourite)
     }
