@@ -2,8 +2,10 @@ package com.corrado4eyes.dehet.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Database
 import com.corrado4eyes.dehet.delegates.ViewModelDelegate
 import com.corrado4eyes.dehet.models.HistoryEntry
+import com.corrado4eyes.dehet.repos.DatabaseRepository
 import com.corrado4eyes.dehet.repos.YandexRepository
 import com.corrado4eyes.dehet.util.CoroutineUtil
 import com.corrado4eyes.dehet.util.DispatcherProvider
@@ -18,11 +20,13 @@ class HomeViewModel: ViewModel(), KoinComponent {
 
     private val yandexRepo: YandexRepository by inject()
 
+    private val databaseRepo: DatabaseRepository by inject()
+
     private val dispatcher: DispatcherProvider by inject()
 
     private val coroutineUtil = CoroutineUtil(dispatcher)
 
-    private val viewModelDelegate = ViewModelDelegate(yandexRepo, coroutineUtil)
+    private val viewModelDelegate = ViewModelDelegate(yandexRepo, databaseRepo,coroutineUtil)
 
 
     val editTextValue = MutableLiveData<String>()
@@ -43,12 +47,16 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return resultHistoryEntry != null
     }
 
-    fun onFavouriteButtonClicked(position: Int): List<HistoryEntry> {
-        val entry = historyList.value!![position]
-        entry.isFavourite = !entry.isFavourite
-        val historyList = historyList.value?.toMutableList()
-            ?: mutableListOf()
-        return viewModelDelegate.updateItemInHistory(entry, position, historyList)
+    suspend fun onFavouriteButtonClicked(position: Int) {
+        coroutineUtil.doInBackground {
+            val entry = historyList.value!![position]
+            entry.isFavourite = !entry.isFavourite
+            viewModelDelegate.upsertEntry(entry)
+        }
+    }
+
+    suspend fun syncUiWithDb(): List<HistoryEntry> = coroutineUtil.doInBackground {
+        return@doInBackground viewModelDelegate.getHistory()
     }
 
     suspend fun onSearchButtonClicked(text: String): HistoryEntry = coroutineUtil.doInBackground {
@@ -56,9 +64,9 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return@doInBackground viewModelDelegate.getArticle(checkedText)
     }
 
-    suspend fun onAddResultClicked(newEntry: HistoryEntry): List<HistoryEntry> = coroutineUtil.doInBackground {
-        val oldList = historyList.value?.toMutableList()
-            ?: mutableListOf()
-        return@doInBackground viewModelDelegate.addArticle(newEntry, oldList)
+    suspend fun onAddResultClicked(newEntry: HistoryEntry){
+        coroutineUtil.doInBackground {
+            viewModelDelegate.upsertEntry(newEntry)
+        }
     }
 }
