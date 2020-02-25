@@ -13,7 +13,7 @@ class DatabaseModule {
         val module: Module = module {
             single { HistoryDatabase.getInstance(androidContext()) }
             single { get<HistoryDatabase>().historyDao() }
-            single { DatabaseRepositoryImpl(get()) as DatabaseRepository  }
+            single<DatabaseRepository> { DatabaseRepositoryImpl(get()) }
         }
     }
 
