@@ -40,13 +40,17 @@ class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Ad
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(entry: HistoryEntry) {
-            setListeners()
+            setListeners(entry)
             setupUi(entry)
         }
 
-        private fun setListeners() {
+        private fun setListeners(entry: HistoryEntry) {
             itemView.favouriteButton.setOnClickListener {
-                entryEvent.onFavouriteButtonClicked(adapterPosition)
+                entryEvent.onFavouriteButtonClicked(entry)
+            }
+
+            itemView.deleteEntryButton.setOnClickListener {
+                entryEvent.onDeleteButtonClicked(entry)
             }
         }
 
@@ -54,17 +58,19 @@ class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Ad
             binding.articleLabel.text = entry.toString()
             binding.favouriteButton.setImage(
                 when(entry.isFavourite) {
-                    true -> R.drawable.bookmark
-                    else -> R.drawable.empty_bookmark
+                    true -> R.drawable.big_bookmark
+                    else -> R.drawable.big_empty_bookmark
                 }
             )
+            binding.deleteEntryButton.setImage(R.drawable.delete_icon)
         }
 
     }
 }
 
 interface HistoryEntryEvent {
-    fun onFavouriteButtonClicked(position: Int)
+    fun onFavouriteButtonClicked(entry: HistoryEntry)
+    fun onDeleteButtonClicked(entry: HistoryEntry)
 }
 
 @BindingAdapter("entriesList")
@@ -74,5 +80,7 @@ fun RecyclerView.bindEntries(newList: List<HistoryEntry>) {
 
 @BindingAdapter("bind:entryImg")
 fun ImageButton.setImage(@DrawableRes resId: Int) {
-    this.load(resId)
+    this.load(resId) {
+        crossfade(true)
+    }
 }

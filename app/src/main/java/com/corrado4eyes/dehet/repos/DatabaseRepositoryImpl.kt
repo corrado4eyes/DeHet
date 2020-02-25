@@ -8,6 +8,10 @@ class DatabaseRepositoryImpl(private val historyDao: HistoryDao) : DatabaseRepos
         historyDao.upsertEntry(entry)
     }
 
+    override fun delete(entry: HistoryEntry) {
+        historyDao.deleteEntry(entry)
+    }
+
     override fun getAll(): List<HistoryEntry> {
         return historyDao.getHistory()
     }
