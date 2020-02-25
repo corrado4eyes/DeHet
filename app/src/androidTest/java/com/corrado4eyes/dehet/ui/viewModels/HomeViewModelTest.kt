@@ -3,19 +3,26 @@ package com.corrado4eyes.dehet.ui.viewModels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.corrado4eyes.dehet.models.HistoryEntry
+import com.corrado4eyes.dehet.models.YandexResponse
+import com.corrado4eyes.dehet.repos.DatabaseRepository
+import com.corrado4eyes.dehet.repos.YandexRepository
 import com.corrado4eyes.dehet.testUtils.CoroutineTestRule
-import com.corrado4eyes.dehet.testUtils.TestModules
+import com.corrado4eyes.dehet.testUtils.DatabaseTestModule
+import com.corrado4eyes.dehet.testUtils.DispatcherProviderTestModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.*
 import org.junit.runner.RunWith
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
+import org.koin.test.get
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -32,13 +39,26 @@ class HomeViewModelTest: KoinTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    private lateinit var databaseRepo: DatabaseRepository
+
+    @Mock
+    private lateinit var yandexRepo: YandexRepository
+
+    private val yandexModule = module {
+        single { yandexRepo }
+    }
+
     @Before
     fun before() {
+        MockitoAnnotations.initMocks(this)
         if (GlobalContext.getOrNull() == null) {
             startKoin {
-                modules(TestModules.modules)
+                modules(listOf(yandexModule,
+                    DatabaseTestModule.module,
+                    DispatcherProviderTestModule.module))
             }
         }
+        databaseRepo = get()
         viewModel = HomeViewModel()
     }
 
@@ -59,7 +79,10 @@ class HomeViewModelTest: KoinTest {
     // coroutinesTestRule.testDispatcher.runBlockingTest, but runBlockingTest fails
 
     @Test
-    fun onSearchButtonClicked() = runBlocking {
+    fun onSearchButtonClicked() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        Mockito.`when`(yandexRepo.getTranslation(anyString(), anyString())).thenReturn(
+            YandexResponse(123, "lang", listOf("de bal"))
+        )
         val word = "ball"
         val expectedOutput = HistoryEntry("de", "bal")
         val result = viewModel.onSearchButtonClicked(word)
@@ -68,24 +91,29 @@ class HomeViewModelTest: KoinTest {
     }
 
     @Test
-    fun onAddResultClicked() = runBlocking {
+    fun onAddResultClicked() = coroutinesTestRule.testDispatcher.runBlockingTest {
         val newEntry = HistoryEntry("de", "test")
-        val result = viewModel.onAddResultClicked(newEntry)
-        assertEquals(result.size, 1)
-        assertEquals(result[0], newEntry)
+        viewModel.onAddResultClicked(newEntry)
+        val result = viewModel.syncUiWithDb()
+        assertEquals(1, result.size)
+        assertEquals(newEntry, result[0])
     }
 
+    @Ignore("OnConflictStrategy.REPLACE does not work in test.(Investigate)")
     @Test
-    fun onFavouriteButtonClicked() {
+    fun onFavouriteButtonClicked() = coroutinesTestRule.testDispatcher.runBlockingTest {
         viewModel.historyList.value = listOf(
             HistoryEntry("De", "test"),
             HistoryEntry("Het", "case")
-        )
+        ).apply {
+            map {
+                databaseRepo.upsert(it)
+            }
+        }
 
-        val list = viewModel.historyList.value
-        list?.get(0)?.isFavourite?.let { assertFalse(it) }
-        val result = viewModel.onFavouriteButtonClicked(0)
+        viewModel.historyList.value?.map { assertFalse(it.isFavourite) }
+        viewModel.onFavouriteButtonClicked(1)
+        val result = viewModel.syncUiWithDb()
         assertTrue(result[0].isFavourite)
-        assertFalse(result[1].isFavourite)
     }
 }

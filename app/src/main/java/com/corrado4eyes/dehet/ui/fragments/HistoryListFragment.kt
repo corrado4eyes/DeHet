@@ -44,14 +44,17 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "The size is: ${viewModel.historyList.value!!.size}")
+    override fun onResume() {
+        super.onResume()
+        MainScope().launch {
+            viewModel.historyList.value = viewModel.syncUiWithDb()
+        }
     }
 
     override fun onFavouriteButtonClicked(position: Int) {
         MainScope().launch {
-            viewModel.historyList.value = viewModel.onFavouriteButtonClicked(position)
+            viewModel.onFavouriteButtonClicked(position)
+            viewModel.historyList.value = viewModel.syncUiWithDb()
         }
     }
 }

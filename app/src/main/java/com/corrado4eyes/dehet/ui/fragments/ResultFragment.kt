@@ -43,7 +43,8 @@ class ResultFragment: Fragment(), CoroutineScope by MainScope() {
         val newEntry = viewModel.resultHistoryEntry.value
         MainScope().launch {
             if(newEntry != null) {
-                viewModel.historyList.value = viewModel.onAddResultClicked(newEntry)
+                viewModel.onAddResultClicked(newEntry)
+                viewModel.historyList.value = viewModel.syncUiWithDb()
             } else {
                 Toast.makeText(context, "The result field is empty", Toast.LENGTH_SHORT).show()
             }

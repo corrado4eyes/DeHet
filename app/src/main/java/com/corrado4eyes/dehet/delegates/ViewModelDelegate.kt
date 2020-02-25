@@ -1,13 +1,14 @@
 package com.corrado4eyes.dehet.delegates
 
 import com.corrado4eyes.dehet.models.HistoryEntry
+import com.corrado4eyes.dehet.repos.DatabaseRepository
 import com.corrado4eyes.dehet.repos.YandexRepository
 import com.corrado4eyes.dehet.util.CoroutineUtil
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class ViewModelDelegate(private val yandexRepo: YandexRepository,
-                        val coroutineUtil: CoroutineUtil): KoinComponent {
+open class ViewModelDelegate(private val yandexRepo: YandexRepository,
+                        private val databaseRepo: DatabaseRepository,
+                        private val coroutineUtil: CoroutineUtil): KoinComponent {
     companion object {
         private const val TAG = "ViewModelDelegate"
     }
@@ -31,12 +32,15 @@ class ViewModelDelegate(private val yandexRepo: YandexRepository,
         return@doInBackground HistoryEntry(article, adverb)
     }
 
-    fun addArticle(newEntry: HistoryEntry, oldList: MutableList<HistoryEntry>):
-            List<HistoryEntry> = oldList.plus(newEntry)
-
-    fun updateItemInHistory(newEntry: HistoryEntry, position: Int, list: MutableList<HistoryEntry>):
-            List<HistoryEntry> {
-        list[position] = newEntry
-        return list
+    suspend fun upsertEntry(entry: HistoryEntry) {
+        coroutineUtil.doInBackground {
+            databaseRepo.upsert(entry)
+        }
     }
+
+    suspend fun getHistory(): List<HistoryEntry> = coroutineUtil.doInBackground {
+        return@doInBackground databaseRepo.getAll()
+    }
+
+    suspend fun countRows(): Int =  coroutineUtil.doInBackground { databaseRepo.count() }
 }
