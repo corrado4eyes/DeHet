@@ -5,9 +5,8 @@ import com.corrado4eyes.dehet.repos.DatabaseRepository
 import com.corrado4eyes.dehet.repos.YandexRepository
 import com.corrado4eyes.dehet.util.CoroutineUtil
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class ViewModelDelegate(private val yandexRepo: YandexRepository,
+open class ViewModelDelegate(private val yandexRepo: YandexRepository,
                         private val databaseRepo: DatabaseRepository,
                         private val coroutineUtil: CoroutineUtil): KoinComponent {
     companion object {
@@ -44,13 +43,4 @@ class ViewModelDelegate(private val yandexRepo: YandexRepository,
     }
 
     suspend fun countRows(): Int =  coroutineUtil.doInBackground { databaseRepo.count() }
-
-    fun addArticle(newEntry: HistoryEntry, oldList: MutableList<HistoryEntry>):
-            List<HistoryEntry> = oldList.plus(newEntry)
-
-    fun updateItemInHistory(newEntry: HistoryEntry, position: Int, list: MutableList<HistoryEntry>):
-            List<HistoryEntry> {
-        list[position] = newEntry
-        return list
-    }
 }
