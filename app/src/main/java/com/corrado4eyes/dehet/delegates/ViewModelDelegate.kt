@@ -42,5 +42,9 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
         return@doInBackground databaseRepo.getAll()
     }
 
+    suspend fun deleteEntry(entry: HistoryEntry) = coroutineUtil.doInBackground {
+        databaseRepo.delete(entry)
+    }
+
     suspend fun countRows(): Int =  coroutineUtil.doInBackground { databaseRepo.count() }
 }
