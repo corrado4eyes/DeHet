@@ -78,7 +78,6 @@ fun RecyclerView.bindEntries(newList: List<HistoryEntry>) {
     (adapter as? HistoryAdapter)?.updateEntries(newList)
 }
 
-@BindingAdapter("bind:entryImg")
 fun ImageButton.setImage(@DrawableRes resId: Int) {
     this.load(resId) {
         crossfade(true)
