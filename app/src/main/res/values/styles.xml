@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/darkRed</item>
         <item name="colorPrimary">@color/deepSeaBlue</item>
@@ -9,5 +9,4 @@
         <item name="background">@color/dirtyWhite</item>
         <item name="font">@font/montserrat_regular</item>
     </style>
-
 </resources>
