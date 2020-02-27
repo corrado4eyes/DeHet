@@ -25,7 +25,7 @@ class FavouritesViewModel: ViewModel(), KoinComponent {
     val favouritesList = MutableLiveData<List<HistoryEntry>>()
 
     init {
-        favouritesList.value = listOf(HistoryEntry("de", "hard-coded"))
+        favouritesList.value = listOf()
     }
 
 
