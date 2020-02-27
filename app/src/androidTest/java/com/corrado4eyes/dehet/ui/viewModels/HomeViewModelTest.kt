@@ -93,46 +93,78 @@ class HomeViewModelTest: KoinTest {
     @Test
     fun onAddResultClicked() = coroutinesTestRule.testDispatcher.runBlockingTest {
         val newEntry = HistoryEntry("de", "test")
+        assertEquals(0, viewModel.syncWithLocalDb().size)
         viewModel.onAddResultClicked(newEntry)
         val result = viewModel.syncWithLocalDb()
         assertEquals(1, result.size)
         assertEquals(newEntry, result[0])
     }
 
-    @Ignore("Row is not deleted.. (investivgate)")
     @Test
-    fun onDeleteButtonTapped() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        viewModel.historyList.value = listOf(
-            HistoryEntry("De", "test")
-        ).apply {
-            map {
-                databaseRepo.upsert(it)
-            }
-        }
+    fun onFilterSelected_favourite() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        populateLocalDb()
+        assertEquals(2, viewModel.historyList.value?.size)
 
-        assertEquals(1, viewModel.historyList.value!!.size)
-        viewModel.onDeleteButtonTapped(viewModel.historyList.value!!.first())
-        viewModel.historyList.value = viewModel.syncWithLocalDb()
-        assertEquals(0, viewModel.historyList.value!!.size)
+        viewModel.historyList.value = viewModel.onFilterSelected(true)
+        assertEquals(1, viewModel.historyList.value?.size)
+        assertTrue(viewModel.historyList.value?.first()!!.isFavourite)
     }
 
-    @Ignore("OnConflictStrategy.REPLACE does not work in test.(Investigate)")
     @Test
-    fun onFavouriteButtonClicked() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        viewModel.historyList.value = listOf(
+    fun onFilterSelected_notFavourite() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        populateLocalDb()
+        assertEquals(2, viewModel.historyList.value?.size)
+
+        viewModel.historyList.value = viewModel.onFilterSelected(false)
+        assertEquals(1, viewModel.historyList.value?.size)
+        assertFalse(viewModel.historyList.value?.first()!!.isFavourite)
+    }
+
+    @Test
+    fun onFavouriteButtonTappedTest_toFavourite() =
+        coroutinesTestRule.testDispatcher.runBlockingTest {
+            populateLocalDb()
+            assertEquals(2, viewModel.historyList.value?.size)
+
+            viewModel.onFavouriteButtonTapped(viewModel.historyList.value!!.first())
+            viewModel.historyList.value = viewModel.syncWithLocalDb()
+            assertTrue(viewModel.historyList.value!!.first().isFavourite)
+    }
+
+    @Test
+    fun onFavouriteButtonTappedTest_toNotFavourite() =
+        coroutinesTestRule.testDispatcher.runBlockingTest {
+            populateLocalDb()
+            assertEquals(2, viewModel.historyList.value?.size)
+
+            viewModel.onFavouriteButtonTapped(viewModel.historyList.value!!.last())
+            viewModel.historyList.value = viewModel.syncWithLocalDb()
+            assertFalse(viewModel.historyList.value!!.last().isFavourite)
+    }
+
+    @Test
+    fun onDeleteButtonTappedTest() =
+        coroutinesTestRule.testDispatcher.runBlockingTest {
+            populateLocalDb()
+            assertEquals(2, viewModel.historyList.value?.size)
+
+            val remainingEntry = viewModel.historyList.value!!.last()
+            viewModel.onDeleteButtonTapped(viewModel.historyList.value!!.first())
+            viewModel.historyList.value = viewModel.syncWithLocalDb()
+            assertEquals(1, viewModel.historyList.value?.size)
+            assertEquals(remainingEntry, viewModel.historyList.value!!.first())
+        }
+
+    private suspend fun populateLocalDb() {
+        listOf(
             HistoryEntry("De", "test"),
-            HistoryEntry("Het", "case")
+            HistoryEntry("Het", "case", true)
         ).apply {
             map {
                 databaseRepo.upsert(it)
             }
         }
 
-        viewModel.historyList.value?.map { assertFalse(it.isFavourite) }
-
-        val list = viewModel.historyList.value!!
-        viewModel.onFavouriteButtonTapped(list[1])
-        val result = viewModel.syncWithLocalDb()
-        assertTrue(result[0].isFavourite)
+        viewModel.historyList.value = viewModel.syncWithLocalDb()
     }
 }

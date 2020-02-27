@@ -74,4 +74,9 @@ class HomeViewModel: ViewModel(), KoinComponent {
             viewModelDelegate.deleteEntry(entry)
         }
     }
+
+    suspend fun onFilterSelected(isFilterFavourite: Boolean): List<HistoryEntry> =
+        coroutineUtil.doInBackground {
+            return@doInBackground viewModelDelegate.filterEntries(isFilterFavourite)
+    }
 }
