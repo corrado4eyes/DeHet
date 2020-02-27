@@ -11,6 +11,7 @@ import coil.api.load
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.HistoryEntryBinding
 import com.corrado4eyes.dehet.models.HistoryEntry
+import com.corrado4eyes.dehet.util.ConfirmDeleteDialog
 import kotlinx.android.synthetic.main.history_entry.view.*
 
 class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Adapter<HistoryAdapter.EntryHolder>() {
@@ -50,7 +51,10 @@ class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Ad
             }
 
             itemView.deleteEntryButton.setOnClickListener {
-                entryEvent.onDeleteButtonClicked(entry)
+                val confirmDeleteDialog = ConfirmDeleteDialog(binding.root.context, entryEvent)
+                confirmDeleteDialog.build("Watch out!",
+                    "Are you sure you want to delete this entry?",
+                    entry).show()
             }
         }
 
