@@ -94,9 +94,26 @@ class HomeViewModelTest: KoinTest {
     fun onAddResultClicked() = coroutinesTestRule.testDispatcher.runBlockingTest {
         val newEntry = HistoryEntry("de", "test")
         viewModel.onAddResultClicked(newEntry)
-        val result = viewModel.syncUiWithDb()
+        val result = viewModel.syncWithLocalDb()
         assertEquals(1, result.size)
         assertEquals(newEntry, result[0])
+    }
+
+    @Ignore("Row is not deleted.. (investivgate)")
+    @Test
+    fun onDeleteButtonTapped() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        viewModel.historyList.value = listOf(
+            HistoryEntry("De", "test")
+        ).apply {
+            map {
+                databaseRepo.upsert(it)
+            }
+        }
+
+        assertEquals(1, viewModel.historyList.value!!.size)
+        viewModel.onDeleteButtonTapped(viewModel.historyList.value!!.first())
+        viewModel.historyList.value = viewModel.syncWithLocalDb()
+        assertEquals(0, viewModel.historyList.value!!.size)
     }
 
     @Ignore("OnConflictStrategy.REPLACE does not work in test.(Investigate)")
@@ -114,8 +131,8 @@ class HomeViewModelTest: KoinTest {
         viewModel.historyList.value?.map { assertFalse(it.isFavourite) }
 
         val list = viewModel.historyList.value!!
-        viewModel.onFavouriteButtonClicked(list[1])
-        val result = viewModel.syncUiWithDb()
+        viewModel.onFavouriteButtonTapped(list[1])
+        val result = viewModel.syncWithLocalDb()
         assertTrue(result[0].isFavourite)
     }
 }
