@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/filter"
+        android:icon="@drawable/filter_icon"
+        app:showAsAction="ifRoom"
+        android:title="@string/filter_button">
+        <menu>
+            <item android:title="All"
+                android:id="@+id/noFilter"/>
+            <item android:title="Favourite"
+                android:id="@+id/favouriteFilter"/>
+            <item android:title="Not favourite"
+                android:id="@+id/notFavouriteFilter"/>
+        </menu>
+    </item>
+
+    <item android:id="@+id/favouriteActionBarButton"
+        android:icon="@drawable/white_big_bookmark"
+        app:showAsAction="always"
+        android:title="@string/favourite_menu_button" />
+
+</menu>

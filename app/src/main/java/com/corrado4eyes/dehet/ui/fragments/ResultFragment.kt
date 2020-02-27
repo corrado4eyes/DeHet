@@ -44,7 +44,7 @@ class ResultFragment: Fragment(), CoroutineScope by MainScope() {
         MainScope().launch {
             if(newEntry != null) {
                 viewModel.onAddResultClicked(newEntry)
-                viewModel.historyList.value = viewModel.syncUiWithDb()
+                viewModel.historyList.value = viewModel.syncWithLocalDb()
             } else {
                 Toast.makeText(context, "The result field is empty", Toast.LENGTH_SHORT).show()
             }

@@ -2,20 +2,17 @@ package com.corrado4eyes.dehet.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
-import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.HistoryEntryBinding
 import com.corrado4eyes.dehet.models.HistoryEntry
 import kotlinx.android.synthetic.main.history_entry.view.*
 
-class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Adapter<HistoryAdapter.EntryHolder>() {
+class FavouritesAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Adapter<FavouritesAdapter.EntryHolder>() {
 
-    var historyList: List<HistoryEntry> = listOf()
+    private var favouritesList: List<HistoryEntry> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryHolder {
         val binding = DataBindingUtil.inflate<HistoryEntryBinding>(LayoutInflater.from(parent.context),
@@ -23,15 +20,15 @@ class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Ad
         return EntryHolder(binding, entryEvent)
     }
 
-    override fun getItemCount(): Int = historyList.size
+    override fun getItemCount(): Int = favouritesList.size
 
     override fun onBindViewHolder(holder: EntryHolder, position: Int) {
-        val entry = historyList[position]
+        val entry = favouritesList[position]
         return holder.bind(entry)
     }
 
     fun updateEntries(newList: List<HistoryEntry>) {
-        historyList = newList
+        favouritesList = newList
         notifyDataSetChanged()
     }
 
@@ -68,18 +65,7 @@ class HistoryAdapter(private val entryEvent: HistoryEntryEvent): RecyclerView.Ad
     }
 }
 
-interface HistoryEntryEvent {
-    fun onFavouriteButtonClicked(entry: HistoryEntry)
-    fun onDeleteButtonClicked(entry: HistoryEntry)
-}
-
-@BindingAdapter("entriesList")
-fun RecyclerView.bindEntries(newList: List<HistoryEntry>) {
-    (adapter as? HistoryAdapter)?.updateEntries(newList)
-}
-
-fun ImageButton.setImage(@DrawableRes resId: Int) {
-    this.load(resId) {
-        crossfade(true)
-    }
+@BindingAdapter("favouritesEntries")
+fun RecyclerView.bindFavourites(newList: List<HistoryEntry>) {
+    (adapter as? FavouritesAdapter)?.updateEntries(newList)
 }
