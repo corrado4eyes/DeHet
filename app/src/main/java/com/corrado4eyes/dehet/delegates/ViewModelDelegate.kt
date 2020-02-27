@@ -46,5 +46,10 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
         databaseRepo.delete(entry)
     }
 
+    suspend fun filterEntries(isFilterFavourite: Boolean): List<HistoryEntry> =
+        coroutineUtil.doInBackground {
+            return@doInBackground databaseRepo.filter(isFilterFavourite)
+        }
+
     suspend fun countRows(): Int =  coroutineUtil.doInBackground { databaseRepo.count() }
 }
