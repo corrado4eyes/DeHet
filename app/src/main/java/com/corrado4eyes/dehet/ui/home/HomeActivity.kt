@@ -84,14 +84,14 @@ class HomeActivity : AppCompatActivity() {
                 R.id.favouriteFilter -> {
                     if (filter == Filter.FAVOURITE)
                         return@launch
-                    // TODO: add method in viewModel that is able to filter the values
+                    viewModel.historyList.value = viewModel.onFilterSelected(true)
                     filter = Filter.FAVOURITE
                 }
 
                 R.id.notFavouriteFilter -> {
                     if (filter == Filter.NOT_FAVOURITE)
                         return@launch
-                    // TODO: add method in viewModel that is able to filter the values
+                    viewModel.historyList.value = viewModel.onFilterSelected(false)
                     filter = Filter.NOT_FAVOURITE
                 }
                 R.id.favouriteActionBarButton -> {
