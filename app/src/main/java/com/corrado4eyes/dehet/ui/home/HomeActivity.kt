@@ -78,7 +78,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.noFilter -> {
                     if(filter == Filter.ALL)
                         return@launch
-                    viewModel.historyList.value = viewModel.syncUiWithDb()
+                    viewModel.historyList.value = viewModel.syncWithLocalDb()
                     filter = Filter.ALL
                 }
                 R.id.favouriteFilter -> {

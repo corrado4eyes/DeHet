@@ -1,7 +1,6 @@
 package com.corrado4eyes.dehet.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,21 +47,21 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            viewModel.historyList.value = viewModel.syncUiWithDb()
+            viewModel.historyList.value = viewModel.syncWithLocalDb()
         }
     }
 
     override fun onFavouriteButtonClicked(entry: HistoryEntry) {
         MainScope().launch {
-            viewModel.onFavouriteButtonClicked(entry)
-            viewModel.historyList.value = viewModel.syncUiWithDb()
+            viewModel.onFavouriteButtonTapped(entry)
+            viewModel.historyList.value = viewModel.syncWithLocalDb()
         }
     }
 
     override fun onDeleteButtonClicked(entry: HistoryEntry) {
         MainScope().launch {
-            viewModel.onDeleteButtonClicked(entry)
-            viewModel.historyList.value = viewModel.syncUiWithDb()
+            viewModel.onDeleteButtonTapped(entry)
+            viewModel.historyList.value = viewModel.syncWithLocalDb()
         }
     }
 }
