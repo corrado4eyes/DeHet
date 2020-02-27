@@ -47,14 +47,14 @@ class HomeViewModel: ViewModel(), KoinComponent {
         return resultHistoryEntry != null
     }
 
-    suspend fun onFavouriteButtonClicked(entry: HistoryEntry) {
+    suspend fun onFavouriteButtonTapped(entry: HistoryEntry) {
         coroutineUtil.doInBackground {
             entry.isFavourite = !entry.isFavourite
             viewModelDelegate.upsertEntry(entry)
         }
     }
 
-    suspend fun syncUiWithDb(): List<HistoryEntry> = coroutineUtil.doInBackground {
+    suspend fun syncWithLocalDb(): List<HistoryEntry> = coroutineUtil.doInBackground {
         return@doInBackground viewModelDelegate.getHistory()
     }
 
@@ -69,7 +69,7 @@ class HomeViewModel: ViewModel(), KoinComponent {
         }
     }
 
-    suspend fun onDeleteButtonClicked(entry: HistoryEntry) {
+    suspend fun onDeleteButtonTapped(entry: HistoryEntry) {
         coroutineUtil.doInBackground {
             viewModelDelegate.deleteEntry(entry)
         }
