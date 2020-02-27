@@ -3,4 +3,6 @@
     <string name="type_the_word">Type the word</string>
     <string name="articleLabel">Will be replaced by article + word</string>
     <string name="search">Search!</string>
+    <string name="favourite_menu_button">Favourites</string>
+    <string name="filter_button">Filter button</string>
 </resources>
