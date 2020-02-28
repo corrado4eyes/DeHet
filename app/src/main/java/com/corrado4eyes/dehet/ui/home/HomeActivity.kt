@@ -1,22 +1,17 @@
 package com.corrado4eyes.dehet.ui.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
 import com.corrado4eyes.dehet.di.Modules
-import com.corrado4eyes.dehet.models.Filter
 import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
 import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
+import com.corrado4eyes.dehet.ui.fragments.SegmentedControlFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -31,8 +26,6 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(this).get(HomeViewModel::class.java)
     }
-
-    private var filter: Filter = Filter.ALL
 
     private fun attachResultFragment() {
         val transaction = fragmentManager.beginTransaction()
@@ -57,6 +50,14 @@ class HomeActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun attachSegmentedControlFragment() {
+        val transaction = fragmentManager.beginTransaction()
+        val fragment = SegmentedControlFragment.getInstance()
+        transaction.replace(R.id.segmentedControlFragment, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupBinding() {
         val binding = DataBindingUtil
             .setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -70,33 +71,6 @@ class HomeActivity : AppCompatActivity() {
             modules(Modules.modules)
         }
     }
-
-    private fun onActionBarButtonTapped(id: Int) {
-        MainScope().launch {
-            when(id) {
-                R.id.noFilter -> {
-                    if(filter == Filter.ALL)
-                        return@launch
-                    viewModel.historyList.value = viewModel.syncWithLocalDb()
-                    filter = Filter.ALL
-                }
-                R.id.favouriteFilter -> {
-                    if (filter == Filter.FAVOURITE)
-                        return@launch
-                    viewModel.historyList.value = viewModel.onFilterSelected(true)
-                    filter = Filter.FAVOURITE
-                }
-
-                R.id.notFavouriteFilter -> {
-                    if (filter == Filter.NOT_FAVOURITE)
-                        return@launch
-                    viewModel.historyList.value = viewModel.onFilterSelected(false)
-                    filter = Filter.NOT_FAVOURITE
-                }
-            }
-        }
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,16 +90,6 @@ class HomeActivity : AppCompatActivity() {
         attachSearchBarFragment()
         attachResultFragment()
         attachHistoryFragment()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_home, menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        onActionBarButtonTapped(id)
-
-        return true
+        attachSegmentedControlFragment()
     }
 }
