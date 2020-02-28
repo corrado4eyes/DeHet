@@ -2,7 +2,6 @@ package com.corrado4eyes.dehet.ui.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Database
 import com.corrado4eyes.dehet.delegates.ViewModelDelegate
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.repos.DatabaseRepository
@@ -69,7 +68,8 @@ class HomeViewModel: ViewModel(), KoinComponent {
         }
     }
 
-    suspend fun onDeleteButtonTapped(entry: HistoryEntry) {
+    suspend fun onDeleteButtonTapped(position: Int) {
+        val entry = historyList.value!![position]
         coroutineUtil.doInBackground {
             viewModelDelegate.deleteEntry(entry)
         }
