@@ -11,7 +11,6 @@ import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
 import com.corrado4eyes.dehet.di.Modules
 import com.corrado4eyes.dehet.models.Filter
-import com.corrado4eyes.dehet.ui.favourite.FavouriteActivity
 import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
 import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
@@ -94,16 +93,8 @@ class HomeActivity : AppCompatActivity() {
                     viewModel.historyList.value = viewModel.onFilterSelected(false)
                     filter = Filter.NOT_FAVOURITE
                 }
-                R.id.favouriteActionBarButton -> {
-                    onFavouriteButtonTapped()
-                }
             }
         }
-    }
-
-    private fun onFavouriteButtonTapped() {
-        val intent = Intent(this, FavouriteActivity::class.java)
-        startActivity(intent)
     }
 
 

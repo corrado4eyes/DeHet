@@ -16,9 +16,4 @@
         </menu>
     </item>
 
-    <item android:id="@+id/favouriteActionBarButton"
-        android:icon="@drawable/white_big_bookmark"
-        app:showAsAction="always"
-        android:title="@string/favourite_menu_button" />
-
 </menu>
