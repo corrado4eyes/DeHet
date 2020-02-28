@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
 import com.corrado4eyes.dehet.di.Modules
-import com.corrado4eyes.dehet.models.Filter
 import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
 import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
+import com.corrado4eyes.dehet.ui.fragments.SegmentedControlFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -50,6 +50,14 @@ class HomeActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun attachSegmentedControlFragment() {
+        val transaction = fragmentManager.beginTransaction()
+        val fragment = SegmentedControlFragment.getInstance()
+        transaction.replace(R.id.segmentedControlFragment, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupBinding() {
         val binding = DataBindingUtil
             .setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -82,5 +90,6 @@ class HomeActivity : AppCompatActivity() {
         attachSearchBarFragment()
         attachResultFragment()
         attachHistoryFragment()
+        attachSegmentedControlFragment()
     }
 }
