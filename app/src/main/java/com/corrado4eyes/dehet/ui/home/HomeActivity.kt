@@ -92,4 +92,9 @@ class HomeActivity : AppCompatActivity() {
         attachHistoryFragment()
         attachSegmentedControlFragment()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }
