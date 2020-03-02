@@ -13,6 +13,7 @@ import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
 import com.corrado4eyes.dehet.ui.fragments.SegmentedControlFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 
 class HomeActivity : AppCompatActivity() {
@@ -76,7 +77,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // Dependency injection
-        initializeDependencyInjection()
+        if(GlobalContext.getOrNull() == null) {
+            initializeDependencyInjection()
+        }
     }
 
     override fun onResume() {
