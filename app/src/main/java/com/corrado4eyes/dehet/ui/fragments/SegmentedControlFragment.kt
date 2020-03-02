@@ -44,9 +44,10 @@ class SegmentedControlFragment: Fragment(), KoinComponent, CoroutineScope by Mai
     private fun onFilterSelected(IsFilterFavourite: Boolean) {
         MainScope().launch {
             if(IsFilterFavourite) {
-                viewModel.historyList.value = viewModel.onFilterSelected(true)
+                viewModel.historyList.value =
+                    viewModel.reverseList(viewModel.onFilterSelected(true))
             } else {
-                viewModel.historyList.value = viewModel.syncWithLocalDb()
+                viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
             }
         }
 
