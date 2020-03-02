@@ -13,8 +13,12 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
         private const val TAG = "ViewModelDelegate"
     }
 
+    fun cleanText(text: String): String {
+        return text.replace("\n", "")
+    }
+
     fun checkTextStructure(text: String): String {
-        val splittedText = text.split(" ")
+        val splittedText = cleanText(text).split(" ")
         return if(splittedText.size > 1) {
             // Return the single word if prefixes are added (like article or whatever)
             splittedText.last()
@@ -25,7 +29,7 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
     }
 
     suspend fun getArticle(word: String): HistoryEntry = coroutineUtil.doInBackground {
-        val fullText = "the $word"
+        val fullText = "the ${word.trim()}"
         val response = yandexRepo.getTranslation("en-nl", fullText)
         val article = response.text.first().split(" ").first()
         val adverb = response.text.first().split(" ").last()
