@@ -70,21 +70,25 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            viewModel.historyList.value = viewModel.syncWithLocalDb()
+            syncHistory()
         }
     }
 
     override fun onFavouriteButtonClicked(entry: HistoryEntry) {
         MainScope().launch {
             viewModel.onFavouriteButtonTapped(entry)
-            viewModel.historyList.value = viewModel.syncWithLocalDb()
+            syncHistory()
         }
     }
 
     override fun onEntrySwipedLeft(position: Int) {
         MainScope().launch {
             viewModel.onDeleteButtonTapped(position)
-            viewModel.historyList.value = viewModel.syncWithLocalDb()
+            syncHistory()
         }
+    }
+
+    suspend fun syncHistory() {
+        viewModel.reverseList(viewModel.syncWithLocalDb())
     }
 }
