@@ -12,6 +12,7 @@ import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
 import com.corrado4eyes.dehet.ui.fragments.SegmentedControlFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import com.corrado4eyes.dehet.util.NetworkUtil
 import kotlinx.android.synthetic.main.history_fragment.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
@@ -89,6 +90,9 @@ class HomeActivity : AppCompatActivity() {
         // DataBinding
         setupBinding()
 
+        // Monitoring Internet connection
+        NetworkUtil.registerNetworkCallback(this)
+
         // Attaching fragment
         attachSearchBarFragment()
         attachResultFragment()
@@ -105,5 +109,10 @@ class HomeActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         val historyListViewState = historyListView.layoutManager?.onSaveInstanceState()
         outState.putParcelable("HISTORY_LIST_STATE", historyListViewState)
+    }
+
+    override fun onStop() {
+        NetworkUtil.unregisterNetworkCallback(this)
+        super.onStop()
     }
 }

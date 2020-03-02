@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.SearchBarFragmentBinding
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import com.corrado4eyes.dehet.util.NetworkUtil
 import kotlinx.android.synthetic.main.search_bar_fragment.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -29,6 +30,14 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
     private val viewModel by activityViewModels<HomeViewModel>()
 
     private fun onSearchButtonClicked() {
+
+        if(!NetworkUtil.isDeviceConnected()) {
+            Toast.makeText(requireContext(),
+                "You need to be connected to search new words!",
+                Toast.LENGTH_LONG).show()
+            return
+        }
+
         val givenText = viewModel.editTextValue.value ?: ""
         MainScope().launch {
             if(givenText != "") {
