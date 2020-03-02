@@ -89,6 +89,6 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     }
 
     suspend fun syncHistory() {
-        viewModel.reverseList(viewModel.syncWithLocalDb())
+        viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
     }
 }
