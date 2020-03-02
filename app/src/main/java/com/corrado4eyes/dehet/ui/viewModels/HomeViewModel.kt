@@ -54,7 +54,7 @@ class HomeViewModel: ViewModel(), KoinComponent {
     }
 
     suspend fun syncWithLocalDb(): List<HistoryEntry> = coroutineUtil.doInBackground {
-        return@doInBackground viewModelDelegate.getHistory().reversed()
+        return@doInBackground viewModelDelegate.getHistory()
     }
 
     suspend fun onSearchButtonClicked(text: String): HistoryEntry = coroutineUtil.doInBackground {
@@ -77,6 +77,8 @@ class HomeViewModel: ViewModel(), KoinComponent {
 
     suspend fun onFilterSelected(isFilterFavourite: Boolean): List<HistoryEntry> =
         coroutineUtil.doInBackground {
-            return@doInBackground viewModelDelegate.filterEntries(isFilterFavourite).reversed()
+            return@doInBackground viewModelDelegate.filterEntries(isFilterFavourite)
     }
+
+    fun reverseList(list: List<HistoryEntry>) = list.reversed()
 }
