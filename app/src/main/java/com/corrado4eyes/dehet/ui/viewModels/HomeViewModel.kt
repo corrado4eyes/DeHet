@@ -79,4 +79,6 @@ class HomeViewModel: ViewModel(), KoinComponent {
         coroutineUtil.doInBackground {
             return@doInBackground viewModelDelegate.filterEntries(isFilterFavourite)
     }
+
+    fun reverseList(list: List<HistoryEntry>) = list.reversed()
 }
