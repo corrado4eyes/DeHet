@@ -12,6 +12,7 @@ import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
 import com.corrado4eyes.dehet.ui.fragments.SegmentedControlFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import kotlinx.android.synthetic.main.history_fragment.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
@@ -88,7 +89,6 @@ class HomeActivity : AppCompatActivity() {
         // DataBinding
         setupBinding()
 
-
         // Attaching fragment
         attachSearchBarFragment()
         attachResultFragment()
@@ -99,5 +99,11 @@ class HomeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val historyListViewState = historyListView.layoutManager?.onSaveInstanceState()
+        outState.putParcelable("HISTORY_LIST_STATE", historyListViewState)
     }
 }
