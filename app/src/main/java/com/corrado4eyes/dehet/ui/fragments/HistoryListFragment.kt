@@ -17,6 +17,7 @@ import com.corrado4eyes.dehet.ui.adapters.HistoryAdapter
 import com.corrado4eyes.dehet.ui.adapters.HistoryEntryEvent
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import com.corrado4eyes.dehet.util.SwipeToDeleteCallBack
+import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -56,6 +57,14 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(binding.historyListView)
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        savedInstanceState?.run {
+            historyListView.layoutManager
+                ?.onRestoreInstanceState(getParcelable("HISTORY_LIST_STATE"))
+        }
     }
 
     override fun onResume() {
