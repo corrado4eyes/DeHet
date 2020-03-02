@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.HistoryFragmentBinding
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.ui.adapters.HistoryAdapter
 import com.corrado4eyes.dehet.ui.adapters.HistoryEntryEvent
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
+import com.corrado4eyes.dehet.util.SwipeToDeleteCallBack
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -30,6 +33,14 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     private val adapter = HistoryAdapter(this)
     private val viewModel by activityViewModels<HomeViewModel>()
 
+    private fun createSwipeHandler(): SwipeToDeleteCallBack {
+        return object : SwipeToDeleteCallBack(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onEntrySwipedLeft(viewHolder.adapterPosition)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +52,9 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         binding.viewModel = viewModel
         binding.historyListView.layoutManager = LinearLayoutManager(activity)
         binding.historyListView.adapter = adapter
+        val swipeHandler = createSwipeHandler()
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.historyListView)
         return binding.root
     }
 
@@ -58,9 +72,9 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         }
     }
 
-    override fun onDeleteButtonClicked(entry: HistoryEntry) {
+    override fun onEntrySwipedLeft(position: Int) {
         MainScope().launch {
-            viewModel.onDeleteButtonTapped(entry)
+            viewModel.onDeleteButtonTapped(position)
             viewModel.historyList.value = viewModel.syncWithLocalDb()
         }
     }
