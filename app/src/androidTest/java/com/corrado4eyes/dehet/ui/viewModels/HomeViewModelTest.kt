@@ -147,9 +147,9 @@ class HomeViewModelTest: KoinTest {
         coroutinesTestRule.testDispatcher.runBlockingTest {
             populateLocalDb()
             assertEquals(2, viewModel.historyList.value?.size)
-
+            val tappedElementIndex = 0
             val remainingEntry = viewModel.historyList.value!!.last()
-            viewModel.onDeleteButtonTapped(viewModel.historyList.value!!.first())
+            viewModel.onDeleteButtonTapped(tappedElementIndex)
             viewModel.historyList.value = viewModel.syncWithLocalDb()
             assertEquals(1, viewModel.historyList.value?.size)
             assertEquals(remainingEntry, viewModel.historyList.value!!.first())
