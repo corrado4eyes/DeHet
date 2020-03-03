@@ -7,13 +7,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.corrado4eyes.dehet.R
+import kotlin.math.absoluteValue
 
 abstract class SwipeToDeleteCallBack(context: Context) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
     private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.trash_bin)!!
     private val width = deleteIcon.intrinsicWidth
-    private val height = deleteIcon.minimumHeight
+    private val height = deleteIcon.intrinsicHeight
     private val background = ColorDrawable()
     private val backgroundColor = Color.parseColor("#EA2027")
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
@@ -57,11 +58,28 @@ abstract class SwipeToDeleteCallBack(context: Context) :
             itemView.top, itemView.right, itemView.bottom)
         background.draw(c)
 
-        val deleteIconTop = itemView.top + (itemHeight - height) / 2
-        val deleteIconMargin = (itemHeight - height) / 2
-        val deleteIconLeft = itemView.right - deleteIconMargin - width
+        // Increment size of the icon until half of the bar (so 0..0.5)
+        val slidedDistance = dX.toInt()
+        val mWidth = itemView.right
+        val slidedPercentage = slidedDistance / mWidth.toFloat()
+
+        var iconSizePercentage: Float
+        var iconWidth = width
+        var iconHeight = height
+
+        // Since the swipe is to the left, I would have gotten negative values and the icon
+        // would have been shown upside down. So I've added the call .absoluteValue, to avoid that.
+        if ((slidedPercentage < 0 && slidedPercentage >= -0.5)) {
+            iconSizePercentage = (slidedPercentage / 0.5).toFloat().absoluteValue
+            iconWidth = (iconWidth * iconSizePercentage).toInt().absoluteValue
+            iconHeight = (iconHeight * iconSizePercentage).toInt().absoluteValue
+        }
+
+        val deleteIconTop = itemView.top + (itemHeight - iconHeight) / 2
+        val deleteIconMargin = (itemHeight - iconHeight ) / 2
+        val deleteIconLeft = itemView.right - deleteIconMargin - iconWidth
         val deleteIconRight = itemView.right - deleteIconMargin
-        val deleteIconBottom = deleteIconTop + height
+        val deleteIconBottom = deleteIconTop + iconWidth
 
         deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
         deleteIcon.draw(c)
