@@ -106,9 +106,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         val historyListViewState = historyListView.layoutManager?.onSaveInstanceState()
         outState.putParcelable("HISTORY_LIST_STATE", historyListViewState)
+        super.onSaveInstanceState(outState)
+
     }
 
     override fun onStop() {
