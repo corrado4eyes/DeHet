@@ -44,6 +44,12 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         }
     }
 
+    private fun addDividerToHistoryEntries() {
+        historyListView.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,9 +69,7 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        historyListView.addItemDecoration(
-            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        )
+        addDividerToHistoryEntries()
     }
 
     override fun onResume() {
