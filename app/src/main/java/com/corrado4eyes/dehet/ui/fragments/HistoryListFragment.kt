@@ -1,12 +1,14 @@
 package com.corrado4eyes.dehet.ui.fragments
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,10 +63,9 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        savedInstanceState?.run {
-            historyListView.layoutManager
-                ?.onRestoreInstanceState(getParcelable("HISTORY_LIST_STATE"))
-        }
+        historyListView.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
     }
 
     override fun onResume() {
@@ -90,5 +91,14 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
 
     suspend fun syncHistory() {
         viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.run {
+            val state = getParcelable<Parcelable>("HISTORY_LIST_STATE")
+            historyListView.layoutManager
+                ?.onRestoreInstanceState(state)
+        }
     }
 }
