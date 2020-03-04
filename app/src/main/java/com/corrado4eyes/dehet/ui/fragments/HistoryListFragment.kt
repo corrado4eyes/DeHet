@@ -19,12 +19,17 @@ import com.corrado4eyes.dehet.ui.adapters.HistoryAdapter
 import com.corrado4eyes.dehet.ui.adapters.HistoryEntryEvent
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import com.corrado4eyes.dehet.util.SwipeToDeleteCallBack
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by MainScope() {
+
+    private val snackbarDuration = 1000
+
     companion object {
         private const val TAG = "HistoryListFragment"
 
@@ -39,9 +44,35 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     private fun createSwipeHandler(): SwipeToDeleteCallBack {
         return object : SwipeToDeleteCallBack(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                onEntrySwipedLeft(viewHolder.adapterPosition)
+                val deletedEntry =
+                    viewModel.historyList.value?.get(viewHolder.adapterPosition) ?: HistoryEntry()
+                val position = viewHolder.adapterPosition
+                onEntrySwipedLeft(position)
+                onBuildSnackbar(deletedEntry).show()
             }
         }
+    }
+
+    private suspend fun onRestoreItem(deletedEntry: HistoryEntry) {
+            viewModel.onAddResultClicked(deletedEntry)
+            if (!viewModel.isFavouriteFilterSelected.value!!) {
+                syncHistory()
+            } else {
+                syncFavouriteHistory()
+            }
+    }
+
+    private fun onBuildSnackbar(deletedEntry: HistoryEntry): Snackbar {
+        return Snackbar.make(requireView(), "One element deleted", snackbarDuration)
+            .setAction("UNDO") {
+                MainScope().launch { onRestoreItem(deletedEntry) }
+            }
+    }
+
+    private fun addDividerToHistoryEntries() {
+        historyListView.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
     }
 
     override fun onCreateView(
@@ -63,9 +94,7 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        historyListView.addItemDecoration(
-            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        )
+        addDividerToHistoryEntries()
     }
 
     override fun onResume() {
@@ -89,8 +118,12 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         }
     }
 
-    suspend fun syncHistory() {
+    private suspend fun syncHistory() {
         viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
+    }
+
+    private suspend fun syncFavouriteHistory() {
+        viewModel.historyList.value = viewModel.reverseList(viewModel.onFilterSelected(true))
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -100,5 +133,10 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
             historyListView.layoutManager
                 ?.onRestoreInstanceState(state)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
     }
 }
