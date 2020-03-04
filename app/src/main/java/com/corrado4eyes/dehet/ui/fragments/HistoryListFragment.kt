@@ -55,11 +55,7 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
 
     private suspend fun onRestoreItem(deletedEntry: HistoryEntry) {
             viewModel.onAddResultClicked(deletedEntry)
-            if (!viewModel.isFavouriteFilterSelected.value!!) {
-                syncHistory()
-            } else {
-                syncFavouriteHistory()
-            }
+            syncHistory()
     }
 
     private fun onBuildSnackbar(deletedEntry: HistoryEntry): Snackbar {
@@ -119,11 +115,20 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     }
 
     private suspend fun syncHistory() {
+        val isFavouriteFilterSelected = viewModel.isFavouriteFilterSelected.value!!
+        if (isFavouriteFilterSelected) {
+            syncByFavourites()
+        } else {
+            syncByAll()
+        }
+    }
+
+    private suspend fun syncByAll() {
         viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
     }
 
-    private suspend fun syncFavouriteHistory() {
-        viewModel.historyList.value = viewModel.reverseList(viewModel.onFilterSelected(true))
+    private suspend fun syncByFavourites() {
+        viewModel.historyList.value = viewModel.reverseList(viewModel.onFilterSelected())
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
