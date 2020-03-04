@@ -118,11 +118,11 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
         }
     }
 
-    suspend fun syncHistory() {
+    private suspend fun syncHistory() {
         viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
     }
 
-    suspend fun syncFavouriteHistory() {
+    private suspend fun syncFavouriteHistory() {
         viewModel.historyList.value = viewModel.reverseList(viewModel.onFilterSelected(true))
     }
 
