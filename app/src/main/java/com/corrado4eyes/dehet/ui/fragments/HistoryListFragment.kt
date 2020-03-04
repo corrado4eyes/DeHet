@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by MainScope() {
@@ -132,5 +133,10 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
             historyListView.layoutManager
                 ?.onRestoreInstanceState(state)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
     }
 }
