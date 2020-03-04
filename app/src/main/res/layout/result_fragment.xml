@@ -18,15 +18,17 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/addResultButton">
+            android:layout_toStartOf="@+id/addResultButton"
+            android:paddingStart="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/resultHistoryEntry"
-            android:hint="@string/articleLabel"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@{viewModel.resultHistoryEntry.toString()}" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/resultHistoryEntry"
+                android:hint="@string/articleLabel"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@{viewModel.resultHistoryEntry.toString()}" />
+
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
