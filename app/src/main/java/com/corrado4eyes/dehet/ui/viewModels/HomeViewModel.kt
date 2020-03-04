@@ -31,11 +31,13 @@ class HomeViewModel: ViewModel(), KoinComponent {
     val editTextValue = MutableLiveData<String>()
     val resultHistoryEntry = MutableLiveData<HistoryEntry>()
     val historyList = MutableLiveData<List<HistoryEntry>>()
+    val isFavouriteFilterSelected = MutableLiveData<Boolean>()
 
     init {
         editTextValue.value = ""
         resultHistoryEntry.value = null
         historyList.value = emptyList()
+        isFavouriteFilterSelected.value = false
     }
 
     private fun checkText(text: String): String {
@@ -75,9 +77,11 @@ class HomeViewModel: ViewModel(), KoinComponent {
         }
     }
 
-    suspend fun onFilterSelected(isFilterFavourite: Boolean): List<HistoryEntry> =
-        coroutineUtil.doInBackground {
+    suspend fun onFilterSelected(isFilterFavourite: Boolean): List<HistoryEntry> {
+        isFavouriteFilterSelected.value = isFilterFavourite
+        return coroutineUtil.doInBackground {
             return@doInBackground viewModelDelegate.filterEntries(isFilterFavourite)
+        }
     }
 
     fun reverseList(list: List<HistoryEntry>) = list.reversed()
