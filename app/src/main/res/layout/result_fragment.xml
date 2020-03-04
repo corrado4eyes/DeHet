@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -29,13 +29,15 @@
             android:text="@{viewModel.resultHistoryEntry.toString()}" />
         </LinearLayout>
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
+            style="@style/roundedButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/rounded_button"
             android:id="@+id/addResultButton"
-            android:src="@drawable/add_32x32"
             android:layout_alignParentEnd="true"
-            android:clickable="@{viewModel.isAddEntryClickable()}"/>
+            android:clickable="@{viewModel.isAddEntryClickable()}"
+            app:icon="@drawable/add_32x32"
+            app:iconGravity="textStart"
+            android:paddingStart="20dp"/>
     </RelativeLayout>
 </layout>
