@@ -1,12 +1,26 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/darkRed</item>
         <item name="colorPrimary">@color/deepSeaBlue</item>
         <item name="colorAccent">@color/darkRed</item>
         <item name="background">@color/dirtyWhite</item>
         <item name="font">@font/montserrat_regular</item>
+    </style>
+    
+    <style name="roundedButton"
+        parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearance">@style/roundedButtonShape</item>
+        <item name="backgroundColor">@color/deepSeaBlue</item>
+    </style>
+    
+    <style name="roundedButtonShape">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerSize">360dp</item>
     </style>
 </resources>
