@@ -3,14 +3,17 @@ package com.corrado4eyes.dehet.data.network
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object YandexApiFactory {
+object YandexApiFactory: KoinComponent {
+
+    private val remoteConfig: RemoteConfig by inject()
 
     private const val baseUrl = "https://translate.yandex.net/api/v1.5/tr.json/"
-    private const val apiKey =
-        "trnsl.1.1.20200218T154614Z.7a67a4387968adde.189f43754868f7a15b9718613a70d46d727f3f17"
+    private val apiKey = remoteConfig.getApiKey()
 
     fun create(): YandexApi {
         val retrofit = Retrofit.Builder()
