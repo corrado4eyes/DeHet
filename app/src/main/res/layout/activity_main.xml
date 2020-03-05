@@ -30,19 +30,9 @@
             android:layout_height="wrap_content"
             android:background="@color/dirtyWhite"
             android:layout_below="@+id/segmentedControlFragment"
-            android:layout_above="@id/resultFragment"
+            android:layout_above="@id/searchBarFragment"
             android:id="@+id/historyFragment"
             android:name="com.corrado4eyes.dehet.ui.fragments.HistoryListFragment"
-            android:padding="1dp"/>
-
-        <androidx.fragment.app.FragmentContainerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/dirtyWhite"
-            android:layout_above="@+id/searchBarFragment"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/resultFragment"
-            android:name="com.corrado4eyes.dehet.ui.fragments.ResultFragment"
             android:padding="1dp"/>
 
         <androidx.fragment.app.FragmentContainerView
