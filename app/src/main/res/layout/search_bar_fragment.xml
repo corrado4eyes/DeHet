@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.corrado4eyes.dehet.ui.fragments.SearchBarFragment">
     <data>
         <variable
@@ -9,28 +10,50 @@
     </data>
     <RelativeLayout
         android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/dirtyWhite"
+        android:paddingBottom="5dp">
 
-        <EditText
-            android:id="@+id/searchBar"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/searchArticleBtnLayout"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="@string/type_the_word"
+                    android:maxHeight="40dp"
+                    android:text="@={viewModel.editTextValue}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/searchArticleBtnLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/searchArticleBtn"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="2dp"
-            android:background="@drawable/rounded_edit_text"
-            android:fontFamily="@font/montserrat_regular"
-            android:maxHeight="40dp"
-            android:hint="@string/type_the_word"
-            android:text="@={viewModel.editTextValue}" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="59dp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/rounded_button"
-            android:src="@drawable/magnifying_glass_32x32"
-            android:id="@+id/searchArticleBtn"/>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/roundedButton"
+                android:id="@+id/searchArticleBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:clickable="@{viewModel.isAddEntryClickable()}"
+                android:paddingStart="20dp"
+                app:icon="@drawable/magnifying_glass_32x32"
+                app:iconGravity="textStart" />
+        </LinearLayout>
+
     </RelativeLayout>
 </layout>
