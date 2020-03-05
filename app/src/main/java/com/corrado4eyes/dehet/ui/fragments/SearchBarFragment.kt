@@ -51,16 +51,14 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
         }
     }
 
-    private fun onAddResult() {
+    private suspend fun onAddResult() {
         val newEntry = viewModel.resultHistoryEntry.value
-        MainScope().launch {
             if(newEntry != null) {
                 viewModel.onAddResultClicked(newEntry)
                 viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
             } else {
                 Toast.makeText(context, "The result field is empty", Toast.LENGTH_SHORT).show()
             }
-        }
     }
 
     override fun onCreateView(
