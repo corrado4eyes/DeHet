@@ -105,19 +105,9 @@ class HomeViewModelTest: KoinTest {
         populateLocalDb()
         assertEquals(2, viewModel.historyList.value?.size)
 
-        viewModel.historyList.value = viewModel.onFilterSelected(true)
+        viewModel.historyList.value = viewModel.onFilterSelected()
         assertEquals(1, viewModel.historyList.value?.size)
         assertTrue(viewModel.historyList.value?.first()!!.isFavourite)
-    }
-
-    @Test
-    fun onFilterSelected_notFavourite() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        populateLocalDb()
-        assertEquals(2, viewModel.historyList.value?.size)
-
-        viewModel.historyList.value = viewModel.onFilterSelected(false)
-        assertEquals(1, viewModel.historyList.value?.size)
-        assertFalse(viewModel.historyList.value?.first()!!.isFavourite)
     }
 
     @Test
