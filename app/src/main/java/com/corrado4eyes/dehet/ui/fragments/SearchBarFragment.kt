@@ -30,23 +30,47 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
     private val viewModel by activityViewModels<HomeViewModel>()
 
     private fun onSearchButtonClicked() {
-
-        if(!NetworkUtil.isDeviceConnected()) {
+        if (!isConnectionAvailable()) {
             Toast.makeText(requireContext(),
                 "You need to be connected to search new words!",
                 Toast.LENGTH_LONG).show()
             return
         }
 
-        val givenText = viewModel.editTextValue.value ?: ""
         MainScope().launch {
-            if(givenText != "") {
-                viewModel.resultHistoryEntry.value = viewModel
-                    .onSearchButtonClicked(givenText)
-            } else {
-                Toast.makeText(activity, "The text box is empty!", Toast.LENGTH_SHORT).show()
-            }
+            // Fetching the word
+            onFetchWord()
+            // Adding result to history
+            onAddResult()
         }
+
+    }
+
+    private fun isConnectionAvailable(): Boolean {
+        if(!NetworkUtil.isDeviceConnected()) {
+            return false
+        }
+        return true
+    }
+
+    private suspend fun onFetchWord() {
+        val givenText = viewModel.editTextValue.value ?: ""
+        if(givenText != "") {
+            viewModel.resultHistoryEntry.value = viewModel
+                .onSearchButtonClicked(givenText)
+        } else {
+            Toast.makeText(activity, "The text box is empty!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private suspend fun onAddResult() {
+        val newEntry = viewModel.resultHistoryEntry.value
+            if(newEntry != null) {
+                viewModel.onAddResultClicked(newEntry)
+                viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
+            } else {
+                Toast.makeText(context, "The result field is empty", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onCreateView(
