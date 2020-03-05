@@ -1,12 +1,24 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/darkRed</item>
         <item name="colorPrimary">@color/deepSeaBlue</item>
         <item name="colorAccent">@color/darkRed</item>
         <item name="background">@color/dirtyWhite</item>
         <item name="font">@font/montserrat_regular</item>
+    </style>
+    
+    <style name="roundedButton"
+        parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearance">@style/roundedButtonShape</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
+    
+    <style name="roundedButtonShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">360dp</item>
     </style>
 </resources>

@@ -1,6 +1,7 @@
 package com.corrado4eyes.dehet.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,9 +45,11 @@ class SegmentedControlFragment: Fragment(), KoinComponent, CoroutineScope by Mai
     private fun onFilterSelected(IsFilterFavourite: Boolean) {
         MainScope().launch {
             if(IsFilterFavourite) {
+                viewModel.isFavouriteFilterSelected.value = true
                 viewModel.historyList.value =
-                    viewModel.reverseList(viewModel.onFilterSelected(true))
+                    viewModel.reverseList(viewModel.onFilterSelected())
             } else {
+                viewModel.isFavouriteFilterSelected.value = false
                 viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
             }
         }
@@ -55,12 +58,11 @@ class SegmentedControlFragment: Fragment(), KoinComponent, CoroutineScope by Mai
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.segmentedControlFilter.setOnClickedButtonListener {
-            when(it) {
-                0 -> {
-                    onFilterSelected(false)
-                }
-                1 -> onFilterSelected(true)
+        view.segmentedControlFilter.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            when(group.checkedButtonId) {
+                R.id.filterAll -> onFilterSelected(false)
+                R.id.filterFavourites -> onFilterSelected(true)
+                else -> Log.d(TAG, "no case")
             }
         }
     }
