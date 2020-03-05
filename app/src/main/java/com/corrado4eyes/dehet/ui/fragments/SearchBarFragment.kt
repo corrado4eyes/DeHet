@@ -30,7 +30,7 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
     private val viewModel by activityViewModels<HomeViewModel>()
 
     private fun onSearchButtonClicked() {
-        if (!onCheckConnection()) {
+        if (!isConnectionAvailable()) {
             Toast.makeText(requireContext(),
                 "You need to be connected to search new words!",
                 Toast.LENGTH_LONG).show()
@@ -46,7 +46,7 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
 
     }
 
-    private fun onCheckConnection(): Boolean {
+    private fun isConnectionAvailable(): Boolean {
         if(!NetworkUtil.isDeviceConnected()) {
             return false
         }
