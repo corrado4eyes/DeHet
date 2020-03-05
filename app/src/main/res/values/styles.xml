@@ -13,7 +13,8 @@
     <style name="roundedButton"
         parent="Widget.MaterialComponents.Button">
         <item name="shapeAppearance">@style/roundedButtonShape</item>
-        <item name="backgroundColor">@color/deepSeaBlue</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
     </style>
     
     <style name="roundedButtonShape">
