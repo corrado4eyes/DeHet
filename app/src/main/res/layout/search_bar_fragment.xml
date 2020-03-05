@@ -15,11 +15,13 @@
         android:paddingBottom="5dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/roundedEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@id/searchArticleBtnLayout">
+                android:layout_toStartOf="@id/searchArticleBtnLayout"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/searchBar"
