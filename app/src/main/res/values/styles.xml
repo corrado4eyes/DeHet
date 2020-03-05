@@ -21,17 +21,4 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">360dp</item>
     </style>
-
-    <style name="roundedEditText"
-        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="shapeAppearance">@style/roundedEditTextShape</item>
-    </style>
-
-    <style name="roundedEditTextShape">
-        <item name="cornerFamilyTopLeft">rounded</item>
-        <item name="cornerFamilyBottomLeft">rounded</item>
-        <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerFamilyBottomRight">rounded</item>
-        <item name="cornerSize">360dp</item>
-    </style>
 </resources>
