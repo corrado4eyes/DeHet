@@ -4,6 +4,7 @@ class Modules {
     companion object {
         val modules = listOf(YandexModule.yandexModule,
             DispatcherProviderModule.module,
-            DatabaseModule.module)
+            DatabaseModule.module,
+            RemoteConfigModule.module)
     }
 }
