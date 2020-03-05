@@ -8,7 +8,6 @@ import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.ActivityMainBinding
 import com.corrado4eyes.dehet.di.Modules
 import com.corrado4eyes.dehet.ui.fragments.HistoryListFragment
-import com.corrado4eyes.dehet.ui.fragments.ResultFragment
 import com.corrado4eyes.dehet.ui.fragments.SearchBarFragment
 import com.corrado4eyes.dehet.ui.fragments.SegmentedControlFragment
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
@@ -30,13 +29,6 @@ class HomeActivity : AppCompatActivity() {
         ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
-    private fun attachResultFragment() {
-        val transaction = fragmentManager.beginTransaction()
-        val fragment = ResultFragment.getInstance()
-        transaction.replace(R.id.resultFragment, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
     private fun attachSearchBarFragment() {
         val transaction = fragmentManager.beginTransaction()
         val fragment = SearchBarFragment.getInstance()
@@ -95,7 +87,6 @@ class HomeActivity : AppCompatActivity() {
 
         // Attaching fragment
         attachSearchBarFragment()
-        attachResultFragment()
         attachHistoryFragment()
         attachSegmentedControlFragment()
     }
