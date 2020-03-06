@@ -19,16 +19,7 @@ class RemoteConfigImpl : RemoteConfig {
 
     override fun getApiKey(): String {
         val remoteConfig = getRemoteConfig()
-        remoteConfig.fetchAndActivate().addOnCompleteListener {
-            if(it.isSuccessful) {
-                it.result
-                Log.d("RemoteConfigImpl", "Successful ${it.result}")
-
-
-            } else {
-                Log.d("RemoteConfigImpl", "Failed ${it.result}")
-            }
-        }
+        remoteConfig.fetchAndActivate()
         return remoteConfig.getString("yandexApiKey")
     }
 }
