@@ -1,6 +1,5 @@
 package com.corrado4eyes.dehet.data.network
 
-import android.util.Log
 import com.corrado4eyes.dehet.R
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
