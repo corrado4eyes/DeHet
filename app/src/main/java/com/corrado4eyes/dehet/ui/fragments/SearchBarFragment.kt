@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.SearchBarFragmentBinding
+import com.corrado4eyes.dehet.models.Filter
+import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import com.corrado4eyes.dehet.util.NetworkUtil
 import kotlinx.android.synthetic.main.search_bar_fragment.view.*
@@ -63,11 +65,18 @@ class SearchBarFragment: Fragment(), CoroutineScope by MainScope() {
         }
     }
 
+    private suspend fun onSyncHistory(): List<HistoryEntry> {
+        return when(viewModel.isFavouriteFilterSelected.value!!) {
+            Filter.ALL -> viewModel.reverseList(viewModel.syncWithLocalDb())
+            Filter.FAVOURITE -> viewModel.reverseList(viewModel.onFilterSelected())
+        }
+    }
+
     private suspend fun onAddResult() {
         val newEntry = viewModel.resultHistoryEntry.value
             if(newEntry != null) {
                 viewModel.onAddResultClicked(newEntry)
-                viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
+                viewModel.historyList.value = onSyncHistory()
             } else {
                 Toast.makeText(context, "The result field is empty", Toast.LENGTH_SHORT).show()
             }
