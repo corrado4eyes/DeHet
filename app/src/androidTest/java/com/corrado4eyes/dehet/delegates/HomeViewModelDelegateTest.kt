@@ -69,8 +69,16 @@ class HomeViewModelDelegateTest: KoinTest {
 
     @Test
     fun checkTextStructure_caseFullText() {
-        val text = "Pass the last word"
-        val expected = "word"
+        val text = "sleeping test"
+        val expected = "sleeping test"
+        val result = viewModelDelegate.checkTextStructure(text)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun checkTextStructure_caseWithThe() {
+        val text = "The sleeping test"
+        val expected = "sleeping test"
         val result = viewModelDelegate.checkTextStructure(text)
         assertEquals(expected, result)
     }
