@@ -20,7 +20,7 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
     fun checkTextStructure(text: String): String {
         val splittedText = cleanText(text).split(" ")
         return splittedText.filter { s ->
-            s != "the"
+            s.toLowerCase() != "the"
         }.joinToString(" ")
     }
 
