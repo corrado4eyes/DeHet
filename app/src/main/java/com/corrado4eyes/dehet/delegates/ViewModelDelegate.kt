@@ -27,8 +27,12 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
     suspend fun getArticle(word: String): HistoryEntry = coroutineUtil.doInBackground {
         val fullText = "the ${word.trim()}"
         val response = yandexRepo.getTranslation("en-nl", fullText)
-        val article = response.text.first().split(" ").first()
-        val adverb = response.text.first().split(" ").last()
+        val fullResponseText = response.text.first()
+        val splittedFullResponseText = fullResponseText.split(" ")
+        val article = splittedFullResponseText.first()
+        val adverb =
+            splittedFullResponseText.subList(1, splittedFullResponseText.size)
+                .joinToString(" ")
         return@doInBackground HistoryEntry(article, adverb)
     }
 
