@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1089445345559",
+    "firebase_url": "https://deorhet.firebaseio.com",
+    "project_id": "deorhet",
+    "storage_bucket": "deorhet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089445345559:android:1c7a2da1b06ee76fb8df52",
+        "android_client_info": {
+          "package_name": "com.corrado4eyes.dehet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089445345559-06v9uus2qfgjdfbui4eob6r025dbl5bh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrLfUey6MjgTtuokKLRQIBJhJHN-U0sL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089445345559-06v9uus2qfgjdfbui4eob6r025dbl5bh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
