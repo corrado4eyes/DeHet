@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.HistoryFragmentBinding
+import com.corrado4eyes.dehet.models.Filter
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.ui.adapters.HistoryAdapter
 import com.corrado4eyes.dehet.ui.adapters.HistoryEntryEvent
@@ -115,11 +116,9 @@ class HistoryListFragment: Fragment(), HistoryEntryEvent, CoroutineScope by Main
     }
 
     private suspend fun syncHistory() {
-        val isFavouriteFilterSelected = viewModel.isFavouriteFilterSelected.value!!
-        if (isFavouriteFilterSelected) {
-            syncByFavourites()
-        } else {
-            syncByAll()
+        when (viewModel.isFavouriteFilterSelected.value!!) {
+            Filter.FAVOURITE -> syncByFavourites()
+            Filter.ALL -> syncByAll()
         }
     }
 
