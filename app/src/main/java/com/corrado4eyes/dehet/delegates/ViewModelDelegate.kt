@@ -13,19 +13,15 @@ open class ViewModelDelegate(private val yandexRepo: YandexRepository,
         private const val TAG = "ViewModelDelegate"
     }
 
-    fun cleanText(text: String): String {
+    private fun cleanText(text: String): String {
         return text.replace("\n", "")
     }
 
     fun checkTextStructure(text: String): String {
         val splittedText = cleanText(text).split(" ")
-        return if(splittedText.size > 1) {
-            // Return the single word if prefixes are added (like article or whatever)
-            splittedText.last()
-        } else {
-            // Single word
-            text
-        }
+        return splittedText.filter { s ->
+            s != "the"
+        }.joinToString(" ")
     }
 
     suspend fun getArticle(word: String): HistoryEntry = coroutineUtil.doInBackground {
