@@ -3,6 +3,7 @@ package com.corrado4eyes.dehet.ui.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.corrado4eyes.dehet.delegates.ViewModelDelegate
+import com.corrado4eyes.dehet.models.Filter
 import com.corrado4eyes.dehet.models.HistoryEntry
 import com.corrado4eyes.dehet.repos.DatabaseRepository
 import com.corrado4eyes.dehet.repos.YandexRepository
@@ -31,13 +32,13 @@ class HomeViewModel: ViewModel(), KoinComponent {
     val editTextValue = MutableLiveData<String>()
     val resultHistoryEntry = MutableLiveData<HistoryEntry>()
     val historyList = MutableLiveData<List<HistoryEntry>>()
-    val isFavouriteFilterSelected = MutableLiveData<Boolean>()
+    val isFavouriteFilterSelected = MutableLiveData<Filter>()
 
     init {
         editTextValue.value = ""
         resultHistoryEntry.value = null
         historyList.value = emptyList()
-        isFavouriteFilterSelected.value = false
+        isFavouriteFilterSelected.value = Filter.ALL
     }
 
     private fun checkText(text: String): String {
