@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.corrado4eyes.dehet.R
 import com.corrado4eyes.dehet.databinding.SegmentedControlFragmentBinding
+import com.corrado4eyes.dehet.models.Filter
 import com.corrado4eyes.dehet.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.segmented_control_fragment.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -42,26 +43,28 @@ class SegmentedControlFragment: Fragment(), KoinComponent, CoroutineScope by Mai
         return binding.root
     }
 
-    private fun onFilterSelected(IsFilterFavourite: Boolean) {
+    private fun onFilterSelected(isFilterFavourite: Filter) {
         MainScope().launch {
-            if(IsFilterFavourite) {
-                viewModel.isFavouriteFilterSelected.value = true
-                viewModel.historyList.value =
-                    viewModel.reverseList(viewModel.onFilterSelected())
-            } else {
-                viewModel.isFavouriteFilterSelected.value = false
-                viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
+            when(isFilterFavourite) {
+                Filter.FAVOURITE -> {
+                    viewModel.isFavouriteFilterSelected.value = Filter.FAVOURITE
+                    viewModel.historyList.value =
+                        viewModel.reverseList(viewModel.onFilterSelected())
+                }
+                Filter.ALL -> {
+                    viewModel.isFavouriteFilterSelected.value = Filter.ALL
+                    viewModel.historyList.value = viewModel.reverseList(viewModel.syncWithLocalDb())
+                }
             }
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.segmentedControlFilter.addOnButtonCheckedListener { group, checkedId, isChecked ->
             when(group.checkedButtonId) {
-                R.id.filterAll -> onFilterSelected(false)
-                R.id.filterFavourites -> onFilterSelected(true)
+                R.id.filterAll -> onFilterSelected(Filter.ALL)
+                R.id.filterFavourites -> onFilterSelected(Filter.FAVOURITE)
                 else -> Log.d(TAG, "no case")
             }
         }
