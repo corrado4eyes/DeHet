@@ -6,6 +6,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def yandexApiKey = properties.getProperty('API_KEY')
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -26,6 +31,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField('String', 'API_KEY', yandexApiKey)
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
